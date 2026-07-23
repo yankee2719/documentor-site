@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="favicon.png">
+<title>Modifica Sostanziale Macchine: Regolamento 2023/1230 | Tool Gratuito · Documentor</title>
+<meta name="description" content="Cos'è una modifica sostanziale secondo il Regolamento (UE) 2023/1230 (art. 3 p. 16) e cosa comporta (art. 18). Verifica gratis in 5 domande se la tua modifica richiede nuova marcatura CE, con report stampabile.">
+<link rel="canonical" href="https://documentor.it/modifica-sostanziale-macchine.html">
+<meta property="og:title" content="Modifica sostanziale di una macchina: verifica gratuita in 5 domande">
+<meta property="og:description" content="Percorso decisionale secondo l'art. 3 p. 16 del Regolamento (UE) 2023/1230: scopri se la modifica richiede nuova marcatura CE e quali obblighi comporta.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://documentor.it/modifica-sostanziale-macchine.html">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+ {"@type":"Question","name":"Cos'è una modifica sostanziale secondo il Regolamento (UE) 2023/1230?","acceptedAnswer":{"@type":"Answer","text":"L'art. 3 punto 16 la definisce come una modifica, con mezzi fisici o digitali, effettuata dopo l'immissione sul mercato o la messa in servizio, non prevista dal fabbricante, che influisce sulla sicurezza creando un pericolo nuovo o aumentando un rischio esistente, e che richiede l'aggiunta di ripari o dispositivi di protezione con modifica del sistema di comando di sicurezza, oppure misure supplementari per stabilità o resistenza meccanica."}},
+ {"@type":"Question","name":"Cosa succede se la modifica è sostanziale?","acceptedAnswer":{"@type":"Answer","text":"Ai sensi dell'art. 18, chi effettua la modifica sostanziale assume gli obblighi del fabbricante per la macchina modificata: valutazione dei rischi, fascicolo tecnico, procedura di valutazione della conformità, nuova Dichiarazione UE di conformità e marcatura CE a proprio nome, istruzioni aggiornate."}},
+ {"@type":"Question","name":"Anche una modifica software può essere sostanziale?","acceptedAnswer":{"@type":"Answer","text":"Sì: la definizione include esplicitamente le modifiche con mezzi digitali. Un aggiornamento software o la modifica di parametri di sicurezza che crea un nuovo pericolo o aumenta un rischio può configurare una modifica sostanziale."}},
+ {"@type":"Question","name":"Se modifico solo una parte della macchina devo rimarcare tutto?","acceptedAnswer":{"@type":"Answer","text":"Se la modifica sostanziale riguarda solo una parte o un'unità di un insieme e non incide sulla macchina nel suo complesso, gli obblighi del fabbricante si applicano limitatamente alla parte interessata. Se invece incide su funzioni di sicurezza comuni, comando centralizzato o stabilità globale, la valutazione deve coprire l'intera macchina."}},
+ {"@type":"Question","name":"E se la modifica NON è sostanziale, devo documentare qualcosa?","acceptedAnswer":{"@type":"Answer","text":"Sì: la valutazione dei rischi ante/post modifica (EN ISO 12100) va comunque documentata. È la prova che la conclusione «non sostanziale» è fondata, in caso di controllo o contestazione."}}
+]}
+</script>
+<style>
+  :root{
+    --paper:#FAFAF8; --ink:#14181F; --slate:#1E2630; --slate-2:#2B3645;
+    --line:#DADDE2; --muted:#6A7280; --accent:#2D54D4; --accent-2:#3F66E6;
+    --yellow:#F4C20D; --ok:#1F8A5B; --warn:#C0871B; --bad:#C23A2B;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0;display:inline-flex;align-items:center;gap:10px}
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--accent)}
+  h2.title{font-size:clamp(26px,3.6vw,38px);letter-spacing:-.025em;line-height:1.08;margin:14px 0 0;font-weight:800;max-width:26ch;position:relative;padding-bottom:16px}
+  h2.title::after{content:"";position:absolute;left:0;bottom:0;width:56px;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--yellow))}
+  .lead{color:var(--muted);max-width:62ch;margin:14px 0 0}
+  section{padding:72px 0}
+
+  nav{position:sticky;top:0;z-index:50;background:rgba(30,38,48,.93);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.07)}
+  nav .row{display:flex;align-items:center;justify-content:space-between;height:60px;color:#EDEFF2}
+  .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:18px;text-decoration:none;color:#fff}
+  .logo b{color:var(--accent-2)}
+  .navlinks{display:flex;align-items:center;gap:24px}
+  .navlinks a{font-size:14px;color:#B8BFC8;text-decoration:none}
+  .navlinks a:hover{color:#fff}
+  .navlinks .cta-sm{background:var(--accent);color:#fff;padding:9px 16px;border-radius:8px;font-weight:600}
+  @media(max-width:820px){.navlinks a:not(.cta-sm){display:none}}
+
+  .btn{font:inherit;font-weight:600;text-decoration:none;border-radius:10px;padding:14px 22px;font-size:15px;display:inline-flex;gap:8px;border:1px solid transparent;transition:transform .12s,background .12s}
+  .btn-pri{background:var(--accent);color:#fff}.btn-pri:hover{background:var(--accent-2);transform:translateY(-1px)}
+  .btn-yellow{background:var(--yellow);color:#1E2630}.btn-yellow:hover{background:#e0b00a;transform:translateY(-1px)}
+  .btn-ghost{background:transparent;color:#E2E5EA;border-color:rgba(255,255,255,.2)}
+  .btn-ghost:hover{border-color:rgba(255,255,255,.45)}
+
+  .hero{background:var(--slate);color:#EDEFF2;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;opacity:.5;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:46px 46px;mask-image:radial-gradient(ellipse 80% 70% at 72% 0%,#000,transparent 75%)}
+  .hero .wrap{position:relative;z-index:2;padding:62px 22px 70px}
+  .deadline{display:inline-flex;gap:9px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--yellow);background:rgba(244,194,13,.1);border:1px solid rgba(244,194,13,.25);padding:6px 12px;border-radius:999px}
+  .hero h1{font-size:clamp(30px,4.6vw,46px);line-height:1.07;letter-spacing:-.03em;font-weight:800;margin:20px 0 0;max-width:22ch}
+  .hero h1 .u{color:var(--yellow)}
+  .hero .sub{margin:20px 0 0;color:#B8BFC8;font-size:17px;max-width:56ch}
+  .hero .ctas{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+  .hero .micro{margin-top:14px;font-size:13px;color:#9AA3AF;font-family:var(--mono)}
+
+  blockquote{background:#fff;border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:0 14px 14px 0;padding:22px 26px;font-size:15.5px;margin:36px 0 0;max-width:860px}
+  blockquote .art{font-family:var(--mono);font-size:12px;color:var(--accent);display:block;margin-top:10px}
+
+  .esiti{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:28px}
+  .ncard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;border-top:3px solid transparent}
+  .ncard .tag{font-family:var(--mono);font-size:11px;color:var(--accent)}
+  .ncard h3{margin:10px 0 8px;font-size:18px}
+  .ncard p,.ncard li{font-size:14px;color:var(--muted)}
+  .ncard ul{margin:8px 0 0 18px;padding:0}
+  .ncard li{margin-bottom:5px}
+  .ncard.si{border-top-color:var(--bad)}
+  .ncard.si h3{color:var(--bad)}
+  .ncard.no{border-top-color:var(--ok)}
+  .ncard.no h3{color:var(--ok)}
+  @media(max-width:760px){.esiti{grid-template-columns:1fr}}
+
+  .note{background:#FDF8EE;border:1px solid #E9D28F;border-radius:12px;padding:16px 20px;font-size:14.5px;margin-top:30px;color:#6B5312}
+  .note a{color:#8a6a12}
+
+  ol.steps{counter-reset:s;list-style:none;max-width:780px;padding:0;margin:36px 0 0}
+  ol.steps li{counter-increment:s;padding:16px 0 16px 58px;position:relative;border-bottom:1px solid var(--line)}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:16px;width:38px;height:38px;border-radius:10px;background:var(--yellow);color:var(--slate);font-weight:800;display:flex;align-items:center;justify-content:center;font-family:var(--mono)}
+  ol.steps li b{color:var(--ink)}
+  ol.steps li span{display:block;font-size:14px;color:var(--muted);margin-top:2px}
+
+  .faq{margin-top:36px;max-width:820px}
+  .faq details{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:#fff}
+  .faq summary{padding:16px 18px;font-weight:700;cursor:pointer;color:var(--slate);list-style:none}
+  .faq summary::before{content:'▸ ';color:var(--accent)}
+  .faq details[open] summary::before{content:'▾ '}
+  .faq .a{padding:0 18px 16px;font-size:14.5px;color:var(--muted)}
+  .faq .a a{color:var(--accent)}
+
+  .final{background:linear-gradient(135deg,#1E2630,#2B3645);color:#EDEFF2;border-radius:20px;padding:52px 40px;text-align:center}
+  .final h2{font-size:clamp(24px,3.6vw,32px);letter-spacing:-.02em;margin:0 auto;max-width:22ch;font-weight:800}
+  .final p{color:#B8BFC8;max-width:52ch;margin:14px auto 0}
+  .final .ctas{display:flex;gap:12px;justify-content:center;margin-top:26px;flex-wrap:wrap}
+
+  footer{padding:44px 0 52px;border-top:1px solid var(--line);margin-top:72px}
+  .foot{display:flex;justify-content:space-between;gap:28px;flex-wrap:wrap}
+  .foot .small{font-size:13px;color:var(--muted);max-width:40ch;margin-top:12px}
+  .legal{margin-top:30px;font-size:12px;color:#9AA3AF;font-family:var(--mono)}
+  .legal a{color:inherit}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap row">
+    <a class="logo" href="index.html"><img src="logo.png" alt="Documentor" style="height:32px;filter:brightness(0) invert(1)"><span>Docu<b>mentor</b></span></a>
+    <div class="navlinks">
+      <a href="index.html#servizi">Servizi</a>
+      <a href="index.html#strumenti">Strumenti</a>
+      <a href="regolamento-2023-1230.html">Regolamento</a>
+      <a href="fascicolo-tecnico-ce.html">Fascicolo tecnico</a>
+      <a href="adeguamento-macchine-usate.html">Macchine usate</a>
+      <a href="machina.html">MACHINA</a>
+      <a href="index.html#contatti">Contatti</a>
+      <a class="cta-sm" href="tools/modifica-sostanziale.html">Apri il tool</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="deadline">TOOL GRATUITO · ART. 3 P. 16 · ART. 18</span>
+    <h1>Modifica <span class="u">sostanziale</span>: quando serve una nuova marcatura CE?</h1>
+    <p class="sub">Il nuovo Regolamento Macchine definisce per la prima volta la «modifica sostanziale» e le sue conseguenze: chi modifica diventa fabbricante. Verifica in 5 domande guidate se la tua modifica è sostanziale e genera il report stampabile della valutazione.</p>
+    <div class="ctas">
+      <a class="btn btn-yellow" href="tools/modifica-sostanziale.html">Apri il tool gratuito →</a>
+      <a class="btn btn-ghost" href="#definizione">Cosa dice la norma</a>
+    </div>
+    <p class="micro">5 DOMANDE, 2 MINUTI · REPORT STAMPABILE · NESSUNA REGISTRAZIONE</p>
+  </div>
+</header>
+
+<section id="definizione">
+  <div class="wrap">
+    <p class="eyebrow">La norma</p>
+    <h2 class="title">Cosa dice il Regolamento (UE) 2023/1230.</h2>
+    <p class="lead">Fino ad oggi la modifica delle macchine in servizio era territorio di linee guida e prassi nazionali. Il nuovo Regolamento, applicabile dal 20 gennaio 2027, la definisce direttamente nel testo di legge:</p>
+    <blockquote>
+      È «modifica sostanziale» una modifica di una macchina, con mezzi fisici o digitali, dopo la sua immissione sul mercato o messa in servizio, <b>non prevista o non pianificata dal fabbricante</b>, che ne influenza la sicurezza creando un <b>pericolo nuovo</b> o aumentando un <b>rischio esistente</b>, tale da richiedere ripari o dispositivi di protezione che comportano la modifica del sistema di comando di sicurezza, oppure misure di protezione supplementari per stabilità o resistenza meccanica.
+      <span class="art">Sintesi di art. 3, punto 16 — Reg. (UE) 2023/1230</span>
+    </blockquote>
+    <div class="esiti">
+      <div class="ncard si"><span class="tag">art. 18</span><h3>Se la modifica È sostanziale</h3>
+        <p>Chi la effettua <b>assume gli obblighi del fabbricante</b> per la macchina modificata:</p>
+        <ul>
+          <li>Valutazione dei rischi completa (EN ISO 12100)</li>
+          <li>Fascicolo tecnico (Allegato IV)</li>
+          <li>Procedura di valutazione della conformità</li>
+          <li>Nuova Dichiarazione UE e marcatura CE a proprio nome</li>
+          <li>Istruzioni aggiornate</li>
+        </ul></div>
+      <div class="ncard no"><span class="tag">EN ISO 12100</span><h3>Se la modifica NON è sostanziale</h3>
+        <p>La marcatura CE originale resta valida, ma la conclusione va <b>dimostrata</b>:</p>
+        <ul>
+          <li>Valutazione dei rischi ante/post modifica documentata</li>
+          <li>Registro modifiche e documentazione aggiornata</li>
+          <li>Misure di riduzione del rischio attuate e tracciate</li>
+        </ul></div>
+    </div>
+    <div class="note"><b>Attenzione alle modifiche digitali:</b> la definizione include esplicitamente i mezzi digitali. Un aggiornamento software o la modifica di parametri di sicurezza può configurare una modifica sostanziale — e se tocca PLC, HMI o connettività va valutato anche il profilo <a href="cybersecurity-macchine-iec-62443.html">cybersecurity (IEC 62443)</a>.</div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <p class="eyebrow">Il percorso</p>
+    <h2 class="title">Il tool ricalca la definizione, domanda per domanda.</h2>
+    <ol class="steps">
+      <li><b>Quando avviene la modifica?</b><span>Prima o dopo l'immissione sul mercato / messa in servizio.</span></li>
+      <li><b>Era prevista dal fabbricante?</b><span>Configurazioni, accessori e upgrade contemplati nelle istruzioni non sono modifiche sostanziali.</span></li>
+      <li><b>Incide sulla sicurezza?</b><span>Pericolo nuovo o rischio aumentato, da verificare con valutazione ante/post (EN ISO 12100).</span></li>
+      <li><b>Richiede nuovi ripari con modifica del comando di sicurezza?</b><span>Condizione della lettera (a): barriere, interblocchi, scanner che toccano le funzioni di sicurezza.</span></li>
+      <li><b>Richiede misure per stabilità o resistenza meccanica?</b><span>Condizione della lettera (b): rinforzi, ancoraggi, ricalcoli strutturali.</span></li>
+    </ol>
+    <p class="lead" style="margin-top:26px">Al termine ottieni il <b>verdetto motivato con riferimento normativo</b>, l'elenco degli adempimenti e il <b>report stampabile</b> con il percorso di valutazione — utile come prima evidenza documentale.</p>
+    <div style="margin-top:24px"><a class="btn btn-pri" href="tools/modifica-sostanziale.html">Inizia la valutazione →</a></div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <p class="eyebrow">FAQ</p>
+    <h2 class="title">Domande frequenti.</h2>
+    <div class="faq">
+      <details><summary>Cos'è una modifica sostanziale secondo il Regolamento 2023/1230?</summary>
+        <div class="a">Una modifica, con mezzi fisici o digitali, effettuata dopo l'immissione sul mercato o la messa in servizio, non prevista dal fabbricante, che influisce sulla sicurezza (pericolo nuovo o rischio aumentato) e richiede nuovi ripari/dispositivi con modifica del sistema di comando di sicurezza, oppure misure supplementari per stabilità o resistenza meccanica (art. 3 p. 16).</div></details>
+      <details><summary>Cosa comporta una modifica sostanziale?</summary>
+        <div class="a">Chi la effettua assume gli obblighi del fabbricante per la macchina modificata (art. 18): valutazione dei rischi, fascicolo tecnico, valutazione della conformità, nuova Dichiarazione UE, marcatura CE a proprio nome e istruzioni aggiornate. Il fabbricante originale non risponde della macchina modificata.</div></details>
+      <details><summary>Anche una modifica software può essere sostanziale?</summary>
+        <div class="a">Sì: la definizione include esplicitamente le modifiche con mezzi digitali. Un aggiornamento software o la variazione di parametri di sicurezza che crea un nuovo pericolo o aumenta un rischio può configurare una modifica sostanziale.</div></details>
+      <details><summary>Se modifico solo una parte della macchina, devo rimarcare tutto?</summary>
+        <div class="a">Se la modifica riguarda solo una parte o un'unità di un insieme e non incide sulla macchina nel suo complesso, gli obblighi si applicano limitatamente alla parte interessata. Se incide su funzioni di sicurezza comuni, comando centralizzato o stabilità globale, la valutazione deve coprire l'intera macchina.</div></details>
+      <details><summary>E se la modifica NON è sostanziale?</summary>
+        <div class="a">La marcatura CE originale resta valida, ma la valutazione dei rischi ante/post modifica (EN ISO 12100) va comunque documentata: è la prova che la conclusione «non sostanziale» è fondata in caso di controllo. Il tool genera il report del percorso decisionale come prima evidenza.</div></details>
+      <details><summary>Che differenza c'è con gli altri strumenti Documentor?</summary>
+        <div class="a">La <a href="gap-analysis.html">Gap Analysis 2023/1230</a> misura la preparazione complessiva al nuovo Regolamento; il <a href="cybersecurity-macchine-iec-62443.html">Risk Assessment IEC 62443</a> valuta i rischi cyber della macchina; questo tool risponde a una domanda puntuale e ricorrente: la modifica che sto per fare richiede una nuova marcatura CE?</div></details>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="final">
+      <h2>Devi gestire una modifica reale?</h2>
+      <p>Valutazione dei rischi documentata ante/post modifica, fascicolo tecnico della macchina modificata, percorso completo di ri-marcatura ai sensi dell'art. 18: affianchiamo costruttori e utilizzatori in tutto il processo.</p>
+      <div class="ctas">
+        <a class="btn btn-yellow" href="mailto:info@documentor.it?subject=Richiesta%20consulenza%20modifica%20sostanziale">Richiedi una consulenza</a>
+        <a class="btn btn-ghost" href="tools/modifica-sostanziale.html">Oppure prova il tool gratuito</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <a class="logo" href="index.html" style="color:var(--ink)"><img src="logo.png" alt="Documentor" style="height:30px"><span>Docu<b style="color:var(--accent)">mentor</b></span></a>
+      <p class="small">Documentazione tecnica e marcatura CE delle macchine secondo il Regolamento (UE) 2023/1230.</p>
+    </div>
+    <div style="font-size:14px;color:var(--muted)">
+      <a href="mailto:info@documentor.it?subject=Richiesta%20informazioni" style="color:#3B4EFF;text-decoration:underline">info@documentor.it</a><br>documentor.it · app.documentor.it
+    </div>
+  </div>
+  <div class="wrap"><p class="legal">© <span id="yr"></span> Documentor · Informazioni a scopo divulgativo, non sostituiscono il testo normativo vigente ·
+    <a href="privacy-cookie.html">Privacy &amp; Cookie</a> ·
+    <a href="machina-privacy.html">Privacy MACHINA</a> ·
+    <a href="machina-termini.html">Termini MACHINA</a></p></div>
+</footer>
+
+<script>document.getElementById("yr").textContent=new Date().getFullYear();</script>
+</body>
+</html>

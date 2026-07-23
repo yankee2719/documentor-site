@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valutazione Modifica Sostanziale — Reg. (UE) 2023/1230</title>
+<style>
+  :root{
+    --ink:#1b2430;
+    --paper:#f7f8f6;
+    --card:#ffffff;
+    --line:#d5dae0;
+    --blu:#0f4c81;
+    --blu-scuro:#0a3559;
+    --ambra:#b7791f;
+    --verde:#2f7d4f;
+    --rosso:#b3382e;
+    --grigio:#5b6673;
+    --mono:"Consolas","Courier New",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Segoe UI",Arial,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5;padding:24px 16px}
+  .wrap{max-width:860px;margin:0 auto}
+
+  header{border-left:6px solid var(--blu);padding:8px 0 8px 18px;margin-bottom:22px}
+  header .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--grigio)}
+  header h1{font-size:26px;color:var(--blu-scuro);margin:4px 0 2px}
+  header p{color:var(--grigio);font-size:14px}
+  header .ref{font-family:var(--mono);font-size:12px;color:var(--blu);margin-top:4px}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:22px;margin-bottom:16px;box-shadow:0 1px 3px rgba(20,30,40,.06)}
+
+  .progress{display:flex;gap:6px;margin-bottom:18px}
+  .progress span{flex:1;height:5px;border-radius:3px;background:var(--line);transition:background .3s}
+  .progress span.done{background:var(--blu)}
+  .progress span.now{background:var(--ambra)}
+
+  .qnum{font-family:var(--mono);font-size:12px;color:var(--ambra);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+  .qtext{font-size:18px;font-weight:600;margin-bottom:8px;color:var(--blu-scuro)}
+  .qnote{font-size:13.5px;color:var(--grigio);margin-bottom:16px}
+  .qnote .art{font-family:var(--mono);font-size:12px;color:var(--blu)}
+
+  .btns{display:flex;gap:10px;flex-wrap:wrap}
+  button{cursor:pointer;border:none;border-radius:6px;padding:11px 22px;font-size:15px;font-weight:600;font-family:inherit}
+  .b-si{background:var(--blu);color:#fff}
+  .b-si:hover{background:var(--blu-scuro)}
+  .b-no{background:#e8ebee;color:var(--ink)}
+  .b-no:hover{background:#dbe0e5}
+  .b-back{background:none;color:var(--grigio);font-weight:400;padding:11px 6px;text-decoration:underline}
+  .b-reset{background:var(--blu-scuro);color:#fff}
+  .b-print{background:#e8ebee;color:var(--ink)}
+
+  .result{border-radius:8px;padding:22px;margin-bottom:16px;border:1px solid}
+  .r-sost{background:#fdf3f2;border-color:#e3b7b2}
+  .r-sost h2{color:var(--rosso)}
+  .r-non{background:#f1f8f3;border-color:#b9d8c5}
+  .r-non h2{color:var(--verde)}
+  .result h2{font-size:21px;margin-bottom:8px}
+  .result .verdict-ref{font-family:var(--mono);font-size:12px;margin-bottom:12px;color:var(--grigio)}
+  .result p{font-size:14.5px;margin-bottom:10px}
+  .result ul{margin:8px 0 12px 20px;font-size:14px}
+  .result li{margin-bottom:7px}
+  .result strong{color:var(--blu-scuro)}
+  .warn{background:#fdf8ee;border:1px solid #e5d3a3;border-radius:6px;padding:12px 14px;font-size:13px;color:#6b5312;margin-top:12px}
+
+  .trail{font-size:13px}
+  .trail h3{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--grigio);margin-bottom:10px;font-family:var(--mono)}
+  .trail-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line)}
+  .trail-row:last-child{border-bottom:none}
+  .trail-a{font-family:var(--mono);font-weight:700;white-space:nowrap}
+  .trail-a.si{color:var(--blu)}
+  .trail-a.no{color:var(--grigio)}
+
+  .meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px}
+  .meta label{font-size:12px;color:var(--grigio);display:block;margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em}
+  .meta input{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:5px;font-size:14px;font-family:inherit;background:#fff}
+  .meta input:focus{outline:2px solid var(--blu);outline-offset:0;border-color:var(--blu)}
+
+  footer{font-size:11.5px;color:var(--grigio);text-align:center;margin-top:26px;line-height:1.6}
+
+  @media(max-width:560px){.meta{grid-template-columns:1fr}header h1{font-size:21px}}
+  @media print{
+    body{background:#fff;padding:0}
+    .btns,.progress,.no-print{display:none!important}
+    .card,.result{box-shadow:none;break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Strumento di valutazione · Sicurezza macchine</div>
+  <h1>Modifica sostanziale di una macchina</h1>
+  <p>Percorso decisionale secondo la definizione dell'articolo 3, punto 16</p>
+  <div class="ref">Regolamento (UE) 2023/1230 — applicabile dal 20 gennaio 2027</div>
+</header>
+
+<div class="card no-print">
+  <div class="meta">
+    <div><label for="m1">Macchina / commessa</label><input id="m1" placeholder="es. Nastro trasportatore linea 3"></div>
+    <div><label for="m2">Descrizione della modifica</label><input id="m2" placeholder="es. Aggiunta stazione di carico robotizzata"></div>
+    <div><label for="m3">Valutatore</label><input id="m3" placeholder="Nome e ruolo"></div>
+    <div><label for="m4">Data</label><input id="m4" type="date"></div>
+  </div>
+</div>
+
+<div class="card" id="quiz">
+  <div class="progress" id="prog"></div>
+  <div class="qnum" id="qnum"></div>
+  <div class="qtext" id="qtext"></div>
+  <div class="qnote" id="qnote"></div>
+  <div class="btns">
+    <button class="b-si" onclick="answer(true)">Sì</button>
+    <button class="b-no" onclick="answer(false)">No</button>
+    <button class="b-back" id="back" onclick="goBack()" style="display:none">← Indietro</button>
+  </div>
+</div>
+
+<div id="out"></div>
+
+<footer>
+  Strumento di supporto alla valutazione — non sostituisce l'analisi documentata ai sensi della EN ISO 12100 né un parere legale.<br>
+  Riferimenti: Reg. (UE) 2023/1230, art. 3 p. 16 (definizione), art. 18 (obblighi di chi effettua la modifica).
+</footer>
+</div>
+
+<script>
+const QUESTIONS=[
+ {
+  n:"Domanda 1 / 5",
+  t:"La modifica è effettuata dopo l'immissione sul mercato o la messa in servizio della macchina?",
+  note:'Con mezzi fisici o digitali (incluse modifiche software / parametri di sicurezza). Se la modifica avviene prima, rientra nella costruzione originale e nella marcatura CE del fabbricante. <span class="art">[art. 3 p. 16]</span>',
+  yes:1, no:"NON_APPLICABILE"
+ },
+ {
+  n:"Domanda 2 / 5",
+  t:"La modifica era prevista o pianificata dal fabbricante originale?",
+  note:'Es.: configurazioni, accessori, upgrade o intervalli di regolazione già contemplati nelle istruzioni o nella valutazione dei rischi del fabbricante. Se prevista, NON è una modifica sostanziale. <span class="art">[art. 3 p. 16]</span>',
+  yes:"NON_SOST_PREVISTA", no:2
+ },
+ {
+  n:"Domanda 3 / 5",
+  t:"La modifica influisce sulla sicurezza della macchina creando un pericolo nuovo oppure aumentando un rischio esistente?",
+  note:'Da verificare tramite valutazione dei rischi (EN ISO 12100) sul confronto ante/post modifica. Se non incide sulla sicurezza, non è sostanziale — ma la valutazione va documentata. <span class="art">[art. 3 p. 16]</span>',
+  yes:3, no:"NON_SOST_NO_RISCHIO"
+ },
+ {
+  n:"Domanda 4 / 5",
+  t:"Il nuovo pericolo (o il rischio aumentato) richiede l'aggiunta di ripari o dispositivi di protezione la cui gestione necessita di modificare il sistema di comando di sicurezza esistente?",
+  note:'Es.: nuova barriera fotoelettrica, nuovo interblocco, nuovo laser scanner che comportano modifica delle funzioni di sicurezza (EN ISO 13849-1 / EN 62061). <span class="art">[art. 3 p. 16, lett. a]</span>',
+  yes:"SOSTANZIALE_A", no:4
+ },
+ {
+  n:"Domanda 5 / 5",
+  t:"Il nuovo pericolo (o il rischio aumentato) richiede misure di protezione supplementari per garantire la stabilità o la resistenza meccanica della macchina?",
+  note:'Es.: rinforzi strutturali, zavorre, ancoraggi, ricalcolo strutturale a seguito di aumento di carichi, velocità, portate. <span class="art">[art. 3 p. 16, lett. b]</span>',
+  yes:"SOSTANZIALE_B", no:"NON_SOST_GESTIBILE"
+ }
+];
+
+let step=0;
+const trail=[];
+
+function render(){
+  const q=QUESTIONS[step];
+  document.getElementById("qnum").textContent=q.n;
+  document.getElementById("qtext").textContent=q.t;
+  document.getElementById("qnote").innerHTML=q.note;
+  document.getElementById("back").style.display=trail.length?"inline-block":"none";
+  const p=document.getElementById("prog");
+  p.innerHTML="";
+  for(let i=0;i<QUESTIONS.length;i++){
+    const s=document.createElement("span");
+    if(i<step)s.className="done";
+    else if(i===step)s.className="now";
+    p.appendChild(s);
+  }
+  document.getElementById("out").innerHTML="";
+  document.getElementById("quiz").style.display="block";
+}
+
+function answer(v){
+  const q=QUESTIONS[step];
+  trail.push({q:q.t,a:v,idx:step});
+  const next=v?q.yes:q.no;
+  if(typeof next==="number"){step=next;render();}
+  else{showResult(next);}
+}
+
+function goBack(){
+  const last=trail.pop();
+  if(last!==undefined){step=last.idx;render();}
+}
+
+function meta(){
+  const g=id=>document.getElementById(id).value.trim();
+  const rows=[["Macchina / commessa",g("m1")],["Modifica",g("m2")],["Valutatore",g("m3")],["Data",g("m4")]]
+    .filter(r=>r[1]);
+  if(!rows.length)return"";
+  return '<div class="card trail"><h3>Dati valutazione</h3>'+rows.map(r=>
+    '<div class="trail-row"><span>'+esc(r[0])+'</span><span class="trail-a no">'+esc(r[1])+'</span></div>').join("")+'</div>';
+}
+
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+
+function trailHtml(){
+  return '<div class="card trail"><h3>Percorso di valutazione</h3>'+trail.map(t=>
+    '<div class="trail-row"><span>'+esc(t.q)+'</span><span class="trail-a '+(t.a?"si":"no")+'">'+(t.a?"SÌ":"NO")+'</span></div>'
+  ).join("")+'</div>';
+}
+
+const RESULTS={
+ SOSTANZIALE_A:{cls:"r-sost",h:"MODIFICA SOSTANZIALE",ref:"art. 3 p. 16 lett. (a) — Reg. (UE) 2023/1230",body:sostBody("a")},
+ SOSTANZIALE_B:{cls:"r-sost",h:"MODIFICA SOSTANZIALE",ref:"art. 3 p. 16 lett. (b) — Reg. (UE) 2023/1230",body:sostBody("b")},
+ NON_SOST_PREVISTA:{cls:"r-non",h:"NON è una modifica sostanziale",ref:"Modifica prevista dal fabbricante — art. 3 p. 16",
+  body:"<p>La modifica rientra tra quelle <strong>previste o pianificate dal fabbricante originale</strong>: resta valida la marcatura CE esistente. Eseguirla secondo le istruzioni del fabbricante e conservarne evidenza (registro modifiche, riferimento al manuale).</p>"},
+ NON_SOST_NO_RISCHIO:{cls:"r-non",h:"NON è una modifica sostanziale",ref:"Nessun nuovo pericolo né aumento di rischio — art. 3 p. 16",
+  body:"<p>La modifica <strong>non incide sulla sicurezza</strong>. La marcatura CE originale resta valida.</p><ul><li><strong>Documentare comunque</strong> la valutazione dei rischi ante/post modifica (EN ISO 12100): è la prova che la conclusione «non sostanziale» è fondata.</li><li>Aggiornare se necessario schemi, manuale e registro modifiche.</li></ul>"},
+ NON_SOST_GESTIBILE:{cls:"r-non",h:"NON è una modifica sostanziale",ref:"Rischio gestibile senza le condizioni di cui alle lett. (a)/(b) — art. 3 p. 16",
+  body:"<p>Esiste un impatto sulla sicurezza, ma il rischio è gestibile <strong>senza</strong> aggiungere ripari/dispositivi che richiedano la modifica del sistema di comando di sicurezza e <strong>senza</strong> misure supplementari per stabilità o resistenza meccanica.</p><ul><li><strong>Attuare e documentare</strong> le misure di riduzione del rischio adottate (EN ISO 12100).</li><li>Aggiornare istruzioni, segnaletica, formazione ove pertinente.</li><li>Conservare la valutazione: in caso di contestazione è ciò che dimostra il perimetro «non sostanziale».</li></ul><div class=\"warn\">Attenzione: se in fase esecutiva emergesse la necessità di modificare il sistema di comando di sicurezza o la struttura, la valutazione va rifatta — l'esito potrebbe cambiare.</div>"},
+ NON_APPLICABILE:{cls:"r-non",h:"Definizione non applicabile",ref:"Modifica antecedente all'immissione sul mercato / messa in servizio",
+  body:"<p>La modifica avviene <strong>prima</strong> dell'immissione sul mercato o della messa in servizio: rientra nel processo di costruzione originario e nella valutazione di conformità del fabbricante, che marca CE la macchina nello stato finale.</p>"}
+};
+
+function sostBody(lett){
+  const causa= lett==="a"
+   ?"aggiunta di ripari o dispositivi di protezione che richiede la modifica del sistema di comando di sicurezza esistente"
+   :"necessità di misure di protezione supplementari per garantire stabilità o resistenza meccanica";
+  return `
+  <p>Il nuovo pericolo / aumento di rischio comporta la <strong>${causa}</strong>: la modifica è <strong>sostanziale</strong>.</p>
+  <p><strong>Conseguenza (art. 18):</strong> chi effettua la modifica <strong>assume gli obblighi del fabbricante</strong> per la macchina modificata. In pratica:</p>
+  <ul>
+    <li><strong>Valutazione dei rischi</strong> completa sulla macchina modificata (EN ISO 12100), incluse le interazioni con le parti non modificate.</li>
+    <li><strong>Fascicolo tecnico</strong> conforme all'Allegato IV (parte A) per la macchina modificata.</li>
+    <li><strong>Procedura di valutazione della conformità</strong> (art. 25) — verifica anche se la modifica fa ricadere la macchina nelle categorie dell'Allegato I.</li>
+    <li><strong>Nuova Dichiarazione UE di conformità</strong> a nome di chi ha effettuato la modifica.</li>
+    <li><strong>Marcatura CE</strong> con identificazione del nuovo «fabbricante» (chi ha modificato), targa aggiornata.</li>
+    <li><strong>Istruzioni</strong> aggiornate (manuale d'uso e manutenzione) per la macchina modificata.</li>
+  </ul>
+  <p><strong>Perimetro degli obblighi:</strong> se la modifica sostanziale riguarda solo una parte della macchina (o un'unità di un insieme) e <strong>non incide sulla macchina nel suo complesso</strong>, gli obblighi del fabbricante si applicano limitatamente alla <strong>parte interessata dalla modifica</strong>. Se invece la modifica ha effetti sull'insieme (es. funzioni di sicurezza comuni, comando centralizzato, stabilità globale), la valutazione di conformità deve coprire la macchina intera.</p>
+  <div class="warn">Il fabbricante originale non risponde della macchina modificata. Documentare con precisione il confine della modifica: è ciò che delimita responsabilità e perimetro di ri-marcatura.</div>`;
+}
+
+function showResult(key){
+  const r=RESULTS[key];
+  document.getElementById("quiz").style.display="none";
+  document.getElementById("out").innerHTML=
+    meta()+
+    `<div class="result ${r.cls}"><h2>${r.h}</h2><div class="verdict-ref">${r.ref}</div>${r.body}</div>`+
+    trailHtml()+
+    `<div class="card no-print" style="background:var(--blu-scuro);border-color:var(--blu-scuro);color:#fff">
+       <h3 style="font-size:15px;margin-bottom:8px;color:#f0c264">Serve un supporto specialistico?</h3>
+       <p style="font-size:13.5px;color:#c9d6df;margin-bottom:12px">Valutazione dei rischi documentata ante/post modifica, fascicolo tecnico per la macchina modificata, percorso completo art. 18: affianchiamo costruttori e utilizzatori nella gestione delle modifiche.</p>
+       <!-- TODO: verificare link contatti reale -->
+       <a href="../index.html#contatti" target="_blank" rel="noopener" style="display:inline-block;background:#b7791f;color:#fff;padding:9px 18px;border-radius:5px;text-decoration:none;font-weight:700;font-size:13px">Richiedi una consulenza →</a>
+       <span style="display:block;margin-top:10px;font-size:12px"><a href="../cybersecurity-macchine-iec-62443.html" target="_blank" rel="noopener" style="color:#c9d6df">La modifica tocca PLC, HMI o connettività? Valuta anche i rischi cyber (IEC 62443) →</a></span>
+     </div>`+
+    `<div class="btns no-print" style="margin-bottom:16px">
+       <button class="b-reset" onclick="reset()">Nuova valutazione</button>
+       <button class="b-print" onclick="window.print()">Stampa / salva PDF</button>
+     </div>`;
+}
+
+function reset(){step=0;trail.length=0;render();}
+render();
+</script>
+</body>
+</html>

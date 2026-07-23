@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documentor CyberRA — Risk Assessment OT guidato IEC 62443-3-2</title>
+<style>
+:root{
+  --ink:#0E1C26; --steel:#22384A; --panel:#F5F7F8; --card:#FFFFFF; --line:#D8DFE4;
+  --amber:#F2A900; --amber-d:#C68A00; --txt:#1B2B38; --muted:#5C7080;
+  --ok:#2E9E5B; --low:#8CC152; --med:#F2C500; --high:#F08A24; --crit:#D93A3A;
+  --info-bg:#EAF3F8; --info-bd:#B9D6E5;
+  --mono:'Consolas','Cascadia Mono','Courier New',monospace;
+  --sans:'Segoe UI','Inter',system-ui,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--panel);color:var(--txt);font-size:14px}
+
+header{background:linear-gradient(135deg,var(--ink),var(--steel));color:#fff;padding:14px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+header .logo{font-size:19px;font-weight:700;letter-spacing:.5px}
+header .logo span{color:var(--amber)}
+header .sub{font-size:12px;opacity:.75}
+header .grow{flex:1}
+#saveStatus{font-size:11px;font-family:var(--mono);background:rgba(255,255,255,.12);padding:4px 10px;border-radius:12px}
+
+/* progress */
+#progressWrap{background:var(--ink);padding:0 24px 10px}
+#progressBar{height:5px;background:rgba(255,255,255,.15);border-radius:3px;overflow:hidden}
+#progressFill{height:100%;background:var(--amber);width:0;transition:width .4s}
+#progressTxt{color:#9FB3C1;font-size:11px;margin-top:4px;font-family:var(--mono)}
+
+nav{display:flex;background:var(--ink);overflow-x:auto}
+nav button{flex:1;min-width:110px;background:none;border:none;color:#9FB3C1;padding:12px 6px;cursor:pointer;font-size:12px;font-weight:600;border-bottom:3px solid transparent;white-space:nowrap}
+nav button:hover{color:#fff}
+nav button.active{color:var(--amber);border-bottom-color:var(--amber)}
+nav button .n{display:inline-block;font-family:var(--mono);font-size:10px;background:rgba(255,255,255,.1);border-radius:50%;width:18px;height:18px;line-height:18px;margin-right:4px}
+nav button.active .n{background:var(--amber);color:var(--ink)}
+nav button.done .n{background:var(--ok);color:#fff}
+
+main{max-width:1200px;margin:0 auto;padding:24px 20px 90px}
+section.step{display:none}
+section.step.active{display:block}
+h2{font-size:20px;color:var(--ink);margin-bottom:4px}
+.hint{font-size:12.5px;color:var(--muted);margin-bottom:18px}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px;margin-bottom:18px}
+.card h3{font-size:14px;color:var(--steel);margin-bottom:12px;text-transform:uppercase;letter-spacing:.6px;border-left:3px solid var(--amber);padding-left:8px}
+
+/* guida contestuale */
+.guide{background:var(--info-bg);border:1px solid var(--info-bd);border-radius:8px;margin-bottom:18px;overflow:hidden}
+.guide summary{cursor:pointer;padding:10px 14px;font-weight:700;font-size:13px;color:var(--steel);list-style:none}
+.guide summary::before{content:'ℹ ';color:#2E86AB}
+.guide[open] summary{border-bottom:1px solid var(--info-bd)}
+.guide .gbody{padding:12px 16px;font-size:13px;line-height:1.55}
+.guide .gbody ul{margin:6px 0 6px 18px}
+.guide .gbody b{color:var(--steel)}
+
+/* checklist avanzamento step */
+.stepcheck{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 16px;margin-bottom:18px;font-size:13px}
+.stepcheck .ok{color:var(--ok);font-weight:700}
+.stepcheck .no{color:var(--muted)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:760px){.grid2,.grid3{grid-template-columns:1fr}}
+label{display:block;font-size:11.5px;font-weight:600;color:var(--muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:.3px}
+input,select,textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:5px;font-size:13.5px;font-family:inherit;background:#fff;color:var(--txt)}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--amber);outline-offset:0;border-color:var(--amber)}
+textarea{resize:vertical;min-height:60px}
+.fld{margin-bottom:10px}
+
+button.btn{background:var(--steel);color:#fff;border:none;padding:9px 16px;border-radius:5px;cursor:pointer;font-size:13px;font-weight:600}
+button.btn:hover{background:var(--ink)}
+button.btn.acc{background:var(--amber);color:var(--ink)}
+button.btn.acc:hover{background:var(--amber-d)}
+button.btn.danger{background:#fff;color:var(--crit);border:1px solid var(--crit)}
+button.btn.danger:hover{background:var(--crit);color:#fff}
+button.btn.ghost{background:#fff;color:var(--steel);border:1px solid var(--line)}
+button.btn:disabled{opacity:.45;cursor:not-allowed}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+
+/* wizard nav bottone avanti/indietro */
+.wiznav{display:flex;justify-content:space-between;margin-top:6px;gap:10px}
+.wiznav .msg{flex:1;align-self:center;font-size:12.5px;color:var(--crit)}
+
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--panel);text-align:left;padding:8px;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);border-bottom:2px solid var(--line)}
+td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:hover td{background:#FBFCFD}
+.mono{font-family:var(--mono);font-size:12px}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700}
+.tag.auto{background:#EAF3F8;color:#2E86AB}
+.zdot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle}
+
+.risk{display:inline-block;min-width:34px;text-align:center;padding:3px 8px;border-radius:4px;font-family:var(--mono);font-weight:700;font-size:12px;color:#fff}
+.r-toll{background:var(--ok)} .r-basso{background:var(--low)} .r-medio{background:var(--med);color:var(--ink)} .r-alto{background:var(--high)} .r-crit{background:var(--crit)}
+
+.matrix{border-collapse:collapse;font-family:var(--mono);font-size:12px}
+.matrix td,.matrix th{border:1px solid var(--line);width:52px;height:38px;text-align:center;padding:0}
+.matrix th{background:var(--panel);font-size:10.5px}
+.matrix td{font-weight:700;color:#fff}
+
+/* intervista */
+.qrow{display:flex;align-items:flex-start;gap:14px;padding:12px 4px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.qrow:last-child{border-bottom:none}
+.qrow .qtxt{flex:1;min-width:260px}
+.qrow .qtxt .qt{font-weight:600;font-size:14px}
+.qrow .qtxt .qs{font-size:12px;color:var(--muted);margin-top:2px}
+.qexp{width:100%;margin-top:6px}
+.qexp summary{cursor:pointer;font-size:11.5px;color:#2E86AB;font-weight:700;list-style:none}
+.qexp summary::before{content:'ℹ '}
+.qexp .qebody{background:var(--info-bg);border:1px solid var(--info-bd);border-radius:6px;padding:10px 12px;font-size:12.5px;line-height:1.55;margin-top:5px}
+.qexp .qebody .norm{display:block;margin-top:6px;font-size:11.5px;color:var(--steel)}
+.qexp .qebody .norm b{color:#2E86AB}
+.qopts{display:flex;gap:6px;flex-shrink:0}
+.qopts button{border:1px solid var(--line);background:#fff;color:var(--muted);padding:7px 14px;border-radius:20px;cursor:pointer;font-size:12.5px;font-weight:700}
+.qopts button.sel-si{background:var(--steel);color:#fff;border-color:var(--steel)}
+.qopts button.sel-no{background:var(--amber);color:var(--ink);border-color:var(--amber)}
+.qopts button.sel-ns{background:#E4E9ED;color:var(--steel);border-color:#C4CED6}
+
+.slgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+@media(max-width:860px){.slgrid{grid-template-columns:repeat(4,1fr)}}
+.slbox{text-align:center}
+.slbox .fr{font-size:10px;font-weight:700;color:var(--muted);margin-bottom:3px}
+.slbox select{text-align:center;font-family:var(--mono);font-weight:700}
+.slbox .sug{font-size:10px;color:#2E86AB;margin-top:2px}
+
+.empty{padding:24px;text-align:center;color:var(--muted);font-size:13px;border:1px dashed var(--line);border-radius:6px}
+
+#overlay{display:none;position:fixed;inset:0;background:rgba(14,28,38,.55);z-index:50}
+#overlay.show{display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
+.modal{background:#fff;border-radius:8px;max-width:760px;width:100%;padding:22px}
+.modal h3{font-size:16px;color:var(--ink);margin-bottom:14px}
+.modal .actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+
+.itemrow{display:flex;gap:8px;margin-bottom:6px}
+.itemrow input{flex:1}
+.itemrow button{background:none;border:none;color:var(--crit);cursor:pointer;font-size:16px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.chips button{border:1px dashed var(--info-bd);background:var(--info-bg);color:var(--steel);padding:5px 10px;border-radius:14px;cursor:pointer;font-size:12px}
+.chips button:hover{background:#DCEBF3}
+.fldguide{margin:2px 0 10px}
+.fldguide summary{cursor:pointer;font-size:11.5px;color:#2E86AB;font-weight:700;list-style:none}
+.fldguide summary::before{content:'ℹ '}
+.fldguide .qebody{background:var(--info-bg);border:1px solid var(--info-bd);border-radius:6px;padding:10px 12px;font-size:12.5px;line-height:1.55;margin-top:5px}
+
+#report{display:none}
+@media print{
+  header,nav,#progressWrap,.toolbar,footer,main{display:none!important}
+  #report{display:block!important;font-size:11.5pt;color:#000}
+  #report h1{font-size:17pt;border-bottom:2.5pt solid #000;padding-bottom:6pt;margin-bottom:4pt}
+  #report h2{font-size:13pt;margin:14pt 0 6pt;border-bottom:1pt solid #888;padding-bottom:2pt;color:#000}
+  #report table{width:100%;border-collapse:collapse;font-size:9.5pt;margin:6pt 0}
+  #report th,#report td{border:.5pt solid #666;padding:3pt 5pt;text-align:left}
+  #report th{background:#eee}
+  #report .rpt-meta{font-size:9.5pt;color:#333;margin-bottom:10pt}
+  .pagebreak{page-break-before:always}
+}
+footer{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);padding:8px 20px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;z-index:10}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">Documentor <span>CyberRA</span></div>
+    <div class="sub">Risk Assessment OT guidato — IEC 62443-3-2 · Regolamento (UE) 2023/1230</div>
+  </div>
+  <div class="grow"></div>
+  <div id="saveStatus">—</div>
+</header>
+
+<div id="progressWrap">
+  <div id="progressBar"><div id="progressFill"></div></div>
+  <div id="progressTxt">Avanzamento: 0%</div>
+</div>
+
+<nav id="nav">
+  <button data-step="0" class="active"><span class="n">1</span>Progetto</button>
+  <button data-step="1"><span class="n">2</span>Intervista</button>
+  <button data-step="2"><span class="n">3</span>Asset</button>
+  <button data-step="3"><span class="n">4</span>Zone</button>
+  <button data-step="4"><span class="n">5</span>Rischi</button>
+  <button data-step="5"><span class="n">6</span>Security Level</button>
+  <button data-step="6"><span class="n">7</span>Report</button>
+</nav>
+
+<main>
+
+<!-- STEP 1: PROGETTO & SUC -->
+<section class="step active" id="step0">
+  <h2>Passo 1 — Progetto e perimetro (SUC)</h2>
+  <p class="hint">Compila i dati della macchina e definisci il perimetro dell'analisi. I campi con esempi ti guidano nella compilazione.</p>
+
+  <details class="guide"><summary>Come compilare questo passo</summary><div class="gbody">
+    Il <b>System Under Consideration (SUC)</b> è l'oggetto dell'analisi: la macchina o l'impianto con tutti i suoi componenti connessi.
+    <ul>
+      <li><b>Perimetro fisico</b>: dove finisce fisicamente la macchina (quadro elettrico, bordo macchina, locale tecnico).</li>
+      <li><b>Perimetro logico</b>: quali reti e connessioni ne fanno parte (rete di cella, VLAN OT, router teleassistenza).</li>
+      <li><b>Esclusioni</b>: cosa NON valuti (tipicamente la rete IT del cliente, ERP/MES) — dichiararlo ti protegge in audit.</li>
+      <li><b>Assunzioni</b>: condizioni che dai per vere (es. "il cliente mantiene il firewall di stabilimento").</li>
+    </ul>
+    Rif. IEC 62443-3-2, ZCR 1.
+  </div></details>
+
+  <div class="stepcheck" id="check0"></div>
+
+  <div class="card">
+    <h3>Dati progetto</h3>
+    <div class="grid3">
+      <div class="fld"><label>Nome progetto *</label><input data-bind="progetto.nome" placeholder="Es. RA Cyber linea selezione"></div>
+      <div class="fld"><label>Macchina / Impianto *</label><input data-bind="progetto.macchina" placeholder="Es. Linea selezione rifiuti"></div>
+      <div class="fld"><label>Costruttore</label><input data-bind="progetto.costruttore" placeholder="Es. OMAR S.r.l."></div>
+      <div class="fld"><label>Commessa / Matricola</label><input data-bind="progetto.commessa" placeholder="Es. 26001"></div>
+      <div class="fld"><label>Autore valutazione</label><input data-bind="progetto.autore"></div>
+      <div class="fld"><label>Revisione</label><input data-bind="progetto.revisione" placeholder="Rev. 0"></div>
+      <div class="fld"><label>Data</label><input type="date" data-bind="progetto.data"></div>
+    </div>
+    <div class="fld"><label>Descrizione macchina e funzione</label><textarea data-bind="progetto.descrizione" placeholder="Breve descrizione: cosa fa la macchina, contesto di installazione"></textarea></div>
+  </div>
+  <div class="card">
+    <h3>Perimetro SUC</h3>
+    <div class="grid2">
+      <div class="fld">
+        <label>Perimetro fisico</label>
+        <details class="fldguide"><summary>Cos'è e come si descrive</summary><div class="qebody">
+          È il confine "toccabile" della valutazione: tutto ciò che sta dentro viene analizzato. Di norma coincide con la fornitura: quadro elettrico principale e ausiliari, bordo macchina, pulpiti operatore, eventuale locale tecnico. Regola pratica: <b>se è parte della fornitura e lo puoi toccare, è dentro il SUC</b>. Rif. IEC 62443-3-2, ZCR 1.
+        </div></details>
+        <textarea data-bind="suc.perimetroFisico" placeholder="Es. quadro elettrico principale, bordo macchina, pulpito operatore"></textarea>
+      </div>
+      <div class="fld">
+        <label>Perimetro logico / di rete</label>
+        <details class="fldguide"><summary>Cos'è e come si descrive</summary><div class="qebody">
+          È il confine di rete: reti, apparati e connessioni che appartengono alla macchina — rete di cella (PROFINET/EtherCAT), switch di macchina, router di teleassistenza, eventuale rete wireless. Indica anche i <b>punti di contatto verso l'esterno</b> (es. porta uplink verso la rete del cliente): diventeranno i conduits al Passo 4. Regola pratica: segui i cavi di rete e le connessioni radio, non i cavi di potenza.
+        </div></details>
+        <textarea data-bind="suc.perimetroLogico" placeholder="Es. rete PROFINET di cella, router teleassistenza, switch di macchina"></textarea>
+      </div>
+    </div>
+    <div class="fld">
+      <label>Esclusioni dal perimetro</label>
+      <details class="fldguide"><summary>Perché è importante dichiararle</summary><div class="qebody">
+        Elenca ciò che <b>esplicitamente non valuti</b>: tipicamente la rete IT del cliente, MES/ERP, l'infrastruttura di stabilimento (firewall aziendale, server). Metterlo per iscritto delimita la tua responsabilità: in un audit, ciò che non è dichiarato escluso si presume incluso. Le esclusioni vanno poi coperte da un'assunzione o una dipendenza corrispondente (es. escludi il firewall di stabilimento → assumi che il cliente lo mantenga attivo).
+      </div></details>
+      <textarea data-bind="suc.esclusioni" placeholder="Es. rete IT aziendale del cliente, sistemi MES/ERP"></textarea>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Assunzioni</h3>
+    <details class="fldguide"><summary>Cosa sono e perché ti proteggono</summary><div class="qebody">
+      Sono le condizioni che <b>dai per vere senza verificarle direttamente</b>: se una di queste cade, la valutazione va rivista. Servono a rendere il risultato difendibile — il rischio residuo è valido "a condizione che...". Esempi tipici: il cliente mantiene attivo il firewall di stabilimento; l'accesso all'area è controllato; la macchina è usata solo da personale formato. Usa i suggerimenti qui sotto per partire, poi adattali al caso reale.
+    </div></details>
+    <div class="chips">
+      <button onclick="addPreset('assunzioni','Il cliente mantiene attivo e aggiornato il firewall/la segmentazione di stabilimento a monte della macchina.')">+ Firewall di stabilimento a carico del cliente</button>
+      <button onclick="addPreset('assunzioni','L\'accesso all\'area di installazione è limitato a personale autorizzato dal cliente.')">+ Accesso area controllato</button>
+      <button onclick="addPreset('assunzioni','La macchina è utilizzata esclusivamente da personale formato secondo il manuale d\'uso.')">+ Solo personale formato</button>
+      <button onclick="addPreset('assunzioni','Le attività di teleassistenza avvengono solo previa autorizzazione del cliente.')">+ Teleassistenza autorizzata dal cliente</button>
+    </div>
+    <div id="assunzioniList"></div>
+    <button class="btn ghost" onclick="addListItem('assunzioni')">+ Aggiungi assunzione</button>
+  </div>
+  <div class="card">
+    <h3>Dipendenze esterne</h3>
+    <details class="fldguide"><summary>Cosa sono e perché vanno censite</summary><div class="qebody">
+      Sono i <b>servizi fuori dal SUC da cui la macchina dipende</b> per funzionare o per restare protetta: rete del cliente, connettività Internet per la teleassistenza, cloud/server del fornitore, server di licenze, NTP/DNS. Vanno elencate perché un attacco o un guasto a una dipendenza colpisce la macchina anche se è fuori dal tuo perimetro — e in audit dimostrano che hai considerato l'intera catena. Rif. IEC 62443-3-2, ZCR 1 (assunzioni e dipendenze del SUC).
+    </div></details>
+    <div class="chips">
+      <button onclick="addPreset('dipendenze','Rete e connettività Internet del cliente per la teleassistenza.')">+ Connettività cliente per teleassistenza</button>
+      <button onclick="addPreset('dipendenze','Servizio cloud/VPN del fornitore per l\'accesso remoto.')">+ Cloud/VPN del fornitore</button>
+      <button onclick="addPreset('dipendenze','Scambio dati con MES/gestionale del cliente.')">+ Scambio dati con MES</button>
+      <button onclick="addPreset('dipendenze','Alimentazione elettrica e servizi di stabilimento.')">+ Servizi di stabilimento</button>
+    </div>
+    <div id="dipendenzeList"></div>
+    <button class="btn ghost" onclick="addListItem('dipendenze')">+ Aggiungi dipendenza</button>
+  </div>
+  <div class="card">
+    <h3>Rischio tollerabile</h3>
+    <p class="hint" style="margin-bottom:10px">Soglia di accettabilità sulla matrice 4×5 (Impatto × Probabilità). Se non sai cosa scegliere, lascia <b>4 — standard</b>.</p>
+    <div class="grid3">
+      <div class="fld"><label>Soglia (1–20)</label>
+        <select data-bind="sogliaRischio">
+          <option value="2">2 — molto conservativa</option>
+          <option value="4" selected>4 — standard</option>
+          <option value="6">6 — moderata</option>
+          <option value="9">9 — permissiva</option>
+        </select>
+      </div>
+    </div>
+    <div id="matrixPreview" style="margin-top:10px;overflow-x:auto"></div>
+  </div>
+  <div class="wiznav"><span></span><button class="btn acc" onclick="goStep(1)">Avanti: Intervista →</button></div>
+</section>
+
+<!-- STEP 2: INTERVISTA GUIDATA -->
+<section class="step" id="step1">
+  <h2>Passo 2 — Intervista guidata</h2>
+  <p class="hint">Rispondi alle domande sulla macchina: al termine il tool genera automaticamente una <b>bozza di zone, conduits, scenari di rischio pertinenti e Security Level suggeriti</b>, che potrai poi rifinire nei passi successivi.</p>
+
+  <details class="guide"><summary>Come funziona la generazione automatica</summary><div class="gbody">
+    Ogni risposta attiva o esclude scenari della libreria minacce OT e regola la probabilità stimata (es. se i backup ci sono, la probabilità di "impossibilità di ripristino" scende). Le risposte <b>"Non so"</b> vengono trattate in modo conservativo (worst case, come richiede la 62443-3-2 per il rischio iniziale). Tutto ciò che viene generato è marcato <span class="tag auto">auto</span> ed è modificabile o eliminabile.
+  </div></details>
+
+  <div class="card" id="quizBox"></div>
+
+  <div class="card">
+    <h3>Genera bozza assessment</h3>
+    <p class="hint" style="margin-bottom:10px" id="quizStatus"></p>
+    <button class="btn acc" id="genBtn" onclick="generateDraft()">⚙ Genera zone, scenari e SL suggeriti</button>
+  </div>
+  <div class="wiznav"><button class="btn ghost" onclick="goStep(0)">← Indietro</button><span class="msg" id="msg1"></span><button class="btn acc" onclick="goStep(2)">Avanti: Asset →</button></div>
+</section>
+
+<!-- STEP 3: ASSET -->
+<section class="step" id="step2">
+  <h2>Passo 3 — Asset Inventory</h2>
+  <p class="hint">Elenca i componenti hardware e software del SUC e assegnali alle zone. Bastano i componenti "intelligenti": PLC, HMI, drive con Ethernet, switch, router, PC, software.</p>
+
+  <details class="guide"><summary>Cosa inserire (e cosa no)</summary><div class="gbody">
+    <b>Da inserire</b>: PLC e Safety PLC, HMI, PC industriali/SCADA, drive e inverter connessi in rete, switch, router/firewall, gateway teleassistenza, robot, I/O remoti, software rilevanti (runtime SCADA, engineering).<br>
+    <b>Da NON inserire</b>: componenti puramente elettromeccanici senza connettività (contattori, finecorsa cablati, motori senza bus).<br>
+    Suggerimento: parti dallo schema elettrico e dalla topologia di rete — è l'inventario che ti chiederanno in audit.
+  </div></details>
+
+  <div class="stepcheck" id="check2"></div>
+  <div class="toolbar">
+    <button class="btn acc" onclick="openAssetModal()">+ Nuovo asset</button>
+    <button class="btn" onclick="openTemplateModal()">📦 Aggiungi da template</button>
+    <button class="btn ghost" onclick="exportCSVAssets()">Esporta CSV</button>
+  </div>
+  <div class="card" style="padding:0;overflow-x:auto">
+    <table id="assetTable">
+      <thead><tr><th>ID</th><th>Nome</th><th>Tipo</th><th>Produttore / Modello</th><th>FW / SW ver.</th><th>Rete / IP</th><th>Zona</th><th></th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <div class="empty" id="assetEmpty" style="margin:14px">Nessun asset. Aggiungi PLC, HMI, drive, switch, router, PC industriali, software SCADA...</div>
+  </div>
+  <div class="wiznav"><button class="btn ghost" onclick="goStep(1)">← Indietro</button><span class="msg" id="msg2"></span><button class="btn acc" onclick="goStep(3)">Avanti: Zone →</button></div>
+</section>
+
+<!-- STEP 4: ZONE -->
+<section class="step" id="step3">
+  <h2>Passo 4 — Zone &amp; Conduits</h2>
+  <p class="hint">Verifica e rifinisci la partizione generata dall'intervista (o creala manualmente). Ogni asset va assegnato a una zona.</p>
+
+  <details class="guide"><summary>Come partizionare correttamente</summary><div class="gbody">
+    Una <b>zona</b> raggruppa asset con requisiti di sicurezza simili; un <b>conduit</b> è il canale che le collega. Schema tipico per una macchina:
+    <ul>
+      <li><b>Zona Controllo</b>: PLC, Safety PLC, I/O, drive — il cuore da proteggere.</li>
+      <li><b>Zona Supervisione</b>: HMI, PC SCADA — più esposta (USB, operatori).</li>
+      <li><b>Zona Teleassistenza</b>: router/gateway remoto — punto d'ingresso dall'esterno.</li>
+      <li>La rete IT del cliente resta <b>fuori</b> dal SUC ma i conduits verso di essa vanno censiti.</li>
+    </ul>
+    Rif. IEC 62443-3-2, ZCR 3.
+  </div></details>
+
+  <div class="stepcheck" id="check3"></div>
+  <div class="toolbar">
+    <button class="btn acc" onclick="openZoneModal()">+ Nuova zona</button>
+    <button class="btn" onclick="openConduitModal()">+ Nuovo conduit</button>
+  </div>
+  <div class="card">
+    <h3>Zone</h3>
+    <div style="overflow-x:auto"><table id="zoneTable">
+      <thead><tr><th>Zona</th><th>Descrizione</th><th>Asset assegnati</th><th></th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+    <div class="empty" id="zoneEmpty">Nessuna zona. Torna al Passo 2 e usa la generazione automatica, oppure creale qui.</div>
+  </div>
+  <div class="card">
+    <h3>Conduits</h3>
+    <div style="overflow-x:auto"><table id="conduitTable">
+      <thead><tr><th>Conduit</th><th>Collega</th><th>Tipo</th><th>Protocolli</th><th></th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+    <div class="empty" id="conduitEmpty">Nessun conduit.</div>
+  </div>
+  <div class="wiznav"><button class="btn ghost" onclick="goStep(2)">← Indietro</button><span class="msg" id="msg3"></span><button class="btn acc" onclick="goStep(4)">Avanti: Rischi →</button></div>
+</section>
+
+<!-- STEP 5: RISCHI -->
+<section class="step" id="step4">
+  <h2>Passo 5 — Valutazione dei rischi</h2>
+  <p class="hint">Rivedi gli scenari generati: assegna la zona dove manca, conferma o correggi impatto e probabilità, poi definisci le contromisure e il rischio residuo.</p>
+
+  <details class="guide"><summary>Come valutare impatto e probabilità</summary><div class="gbody">
+    <b>Impatto</b> (1–4): considera sicurezza persone, fermo produzione, danni a macchina/ambiente, perdita dati.
+    1 Trascurabile · 2 Moderato (fermo breve) · 3 Serio (fermo lungo, danni) · 4 Grave (rischio persone, danni estesi).<br>
+    <b>Probabilità</b> (1–5): con che facilità lo scenario può verificarsi <i>oggi</i>, senza le contromisure che intendi aggiungere.
+    1 Remota · 2 Improbabile · 3 Possibile · 4 Probabile · 5 Frequente.<br>
+    <b>Flusso corretto</b>: rischio iniziale (worst case) → contromisure (rif. controlli 62443-3-3) → rischio residuo ≤ soglia. Se resta sopra soglia, lo stato rimane "Aperto" o "In mitigazione".
+  </div></details>
+
+  <div class="stepcheck" id="check4"></div>
+  <div class="toolbar">
+    <button class="btn acc" onclick="openScenarioModal()">+ Nuovo scenario</button>
+    <button class="btn" onclick="loadLibrary()">📚 Aggiungi da libreria completa</button>
+  </div>
+  <div class="card" style="padding:0;overflow-x:auto">
+    <table id="scenTable">
+      <thead><tr><th>ID</th><th>Zona</th><th>Minaccia / Scenario</th><th>R. iniziale</th><th>Contromisure</th><th>R. residuo</th><th>Stato</th><th></th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <div class="empty" id="scenEmpty" style="margin:14px">Nessuno scenario. Torna al Passo 2 per la generazione automatica o usa la libreria.</div>
+  </div>
+  <div class="wiznav"><button class="btn ghost" onclick="goStep(3)">← Indietro</button><span class="msg" id="msg4"></span><button class="btn acc" onclick="goStep(5)">Avanti: Security Level →</button></div>
+</section>
+
+<!-- STEP 6: SECURITY LEVEL -->
+<section class="step" id="step5">
+  <h2>Passo 6 — Security Level Target (SL-T)</h2>
+  <p class="hint">Conferma o correggi i livelli suggeriti dall'intervista per ogni zona sui 7 Foundational Requirements. Il valore suggerito è indicato sotto ogni menu.</p>
+
+  <details class="guide"><summary>Come leggere gli SL e gli FR</summary><div class="gbody">
+    <b>SL 0</b> nessun requisito · <b>SL 1</b> protezione da uso improprio casuale · <b>SL 2</b> protezione da attacchi intenzionali con mezzi semplici (livello tipico per macchine industriali) · <b>SL 3-4</b> attaccanti sofisticati (infrastrutture critiche).<br><br>
+    <b>FR1 IAC</b> identificazione/autenticazione · <b>FR2 UC</b> controllo dell'uso · <b>FR3 SI</b> integrità sistema · <b>FR4 DC</b> riservatezza dati · <b>FR5 RDF</b> segmentazione flussi · <b>FR6 TRE</b> risposta agli eventi · <b>FR7 RA</b> disponibilità risorse.<br><br>
+    Il SL-T guida la scelta dei requisiti di sistema della 62443-3-3 (gap analysis: Fase 2 del tool).
+  </div></details>
+
+  <div id="slZones"></div>
+  <div class="empty" id="slEmpty" style="display:none">Definisci prima le zone al Passo 4.</div>
+  <div class="wiznav"><button class="btn ghost" onclick="goStep(4)">← Indietro</button><span></span><button class="btn acc" onclick="goStep(6)">Avanti: Report →</button></div>
+</section>
+
+<!-- STEP 7: REPORT -->
+<section class="step" id="step6">
+  <h2>Passo 7 — Report e fascicolo tecnico</h2>
+  <p class="hint">Controlla il riepilogo, poi genera il report PDF per il fascicolo tecnico o esporta il progetto JSON.</p>
+  <div class="stepcheck" id="check6"></div>
+  <div class="card">
+    <h3>Riepilogo</h3>
+    <div id="summary" class="grid3"></div>
+  </div>
+  <div class="card">
+    <h3>Azioni</h3>
+    <div class="toolbar" style="margin:0">
+      <button class="btn acc" onclick="printReport()">🖨 Genera report PDF</button>
+      <button class="btn" onclick="exportJSON()">⬇ Esporta progetto JSON</button>
+      <button class="btn ghost" onclick="document.getElementById('importFile').click()">⬆ Importa progetto JSON</button>
+      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
+      <button class="btn danger" onclick="resetAll()">Nuovo progetto (azzera)</button>
+    </div>
+  </div>
+  <div class="card" style="background:linear-gradient(135deg,var(--ink),var(--steel));border:none;color:#fff">
+    <h3 style="color:var(--amber);border-left-color:var(--amber)">Serve un supporto specialistico?</h3>
+    <p style="font-size:13.5px;color:#C9D6DF;margin-bottom:12px">Gap analysis completa sui requisiti IEC 62443-3-3, integrazione della valutazione cyber nel fascicolo tecnico, adeguamento al Regolamento (UE) 2023/1230: affianchiamo i costruttori in tutto il percorso di conformità.</p>
+    <!-- TODO: verificare link contatti reale -->
+    <a href="../index.html#contatti" target="_blank" rel="noopener" style="display:inline-block;background:var(--amber);color:var(--ink);padding:9px 18px;border-radius:5px;text-decoration:none;font-weight:700;font-size:13px">Richiedi una consulenza →</a>
+  </div>
+  <div class="wiznav"><button class="btn ghost" onclick="goStep(5)">← Indietro</button><span></span><span></span></div>
+</section>
+
+</main>
+
+<footer>
+  <button class="btn ghost" onclick="exportJSON()">⬇ Salva JSON</button>
+  <button class="btn acc" onclick="printReport()">🖨 Report PDF</button>
+</footer>
+
+<div id="overlay"><div class="modal" id="modalBox"></div></div>
+<div id="report"></div>
+
+<script>
+'use strict';
+/* ================= COSTANTI ================= */
+const LSKEY='documentor_cyberra_v2';
+const FRS=['FR1_IAC','FR2_UC','FR3_SI','FR4_DC','FR5_RDF','FR6_TRE','FR7_RA'];
+const FRLAB=['FR1 IAC','FR2 UC','FR3 SI','FR4 DC','FR5 RDF','FR6 TRE','FR7 RA'];
+const ZCOLORS=['#2E86AB','#7A6FBE','#2E9E5B','#D97742','#B0486E','#4A8F8C','#8A6D3B','#5C7080'];
+const IMPLAB=['','1 Trascurabile','2 Moderato','3 Serio','4 Grave'];
+const PROBLAB=['','1 Remota','2 Improbabile','3 Possibile','4 Probabile','5 Frequente'];
+
+/* ================= INTERVISTA: DOMANDE ================= */
+const QUESTIONS=[
+ {id:'remoto',   t:'La macchina ha teleassistenza o accesso remoto?', s:'Router VPN, gateway cloud, modem, accesso del costruttore per assistenza.',
+  e:'L\'accesso remoto è il punto d\'ingresso più sfruttato negli attacchi a sistemi industriali: una connessione sempre attiva o senza autenticazione forte permette a un attaccante di raggiungere direttamente il PLC come se fosse in stabilimento. Non significa che la teleassistenza sia da evitare — va protetta (VPN con autenticazione a due fattori, attivazione solo su richiesta, disconnessione automatica).',
+  n:'IEC 62443-3-3: SR 1.13 (accesso da reti non fidate), SR 2.6 (terminazione sessioni remote) · Reg. (UE) 2023/1230, All. III RESS 1.2.1: il collegamento a dispositivi remoti non deve creare situazioni pericolose.'},
+ {id:'reteIT',   t:'La macchina è collegata alla rete IT/aziendale del cliente?', s:'Scambio dati con MES, gestionale, share di rete, stampanti di ufficio.',
+  e:'La rete IT (uffici, email, Internet) è molto più esposta della rete di macchina: se le due reti comunicano senza barriere, un malware entrato via email può propagarsi fino al PLC. È lo scenario tipico dei fermi produzione da ransomware. Il collegamento in sé è normale (Industria 4.0 lo richiede), ma va mediato da segmentazione.',
+  n:'IEC 62443-3-2: partizionamento in zone e conduits (ZCR 3) · IEC 62443-3-3: SR 5.1 (segmentazione di rete) · Direttiva NIS2: gestione del rischio lungo la catena IT/OT.'},
+ {id:'hmi',      t:'È presente un HMI, pannello operatore o PC di supervisione?', s:'Pannelli touch, PC con SCADA, postazioni operatore.',
+  e:'HMI e PC di supervisione sono l\'interfaccia tra le persone e il controllo: hanno porte USB, account utente, spesso un sistema operativo generico, e per questo sono l\'asset più esposto della macchina. Nella metodologia 62443 finiscono tipicamente in una zona dedicata ("Supervisione") con requisiti propri di autenticazione e controllo dell\'uso.',
+  n:'IEC 62443-1-1: FR1 (identificazione/autenticazione) e FR2 (controllo dell\'uso) · IEC 62443-3-3: SR 1.1, SR 2.1.'},
+ {id:'usb',      t:'Le porte USB su HMI/PC sono utilizzabili dagli operatori?', s:'Chiavette per ricette, backup manuali, aggiornamenti dal campo.',
+  e:'I supporti rimovibili sono un vettore storico di infezione dei sistemi industriali (il caso Stuxnet è nato così): una chiavetta infetta bypassa qualsiasi firewall perché entra "dall\'interno". Le contromisure tipiche sono il blocco fisico o via policy delle porte, l\'uso di stazioni di bonifica per i file, e il whitelisting del software eseguibile.',
+  n:'IEC 62443-3-3: SR 2.3 (controllo di dispositivi portatili e mobili) · Reg. (UE) 2023/1230, RESS 1.1.9: protezione contro la corruzione, anche tramite supporti collegati.'},
+ {id:'scadaWin', t:'C\'è un PC con Windows (SCADA/supervisione) in macchina?', s:'PC industriali o commerciali con sistema operativo Windows.',
+  e:'Un PC Windows in macchina è bersaglio dello stesso malware "di massa" che colpisce gli uffici (ransomware in primis), ma spesso non riceve aggiornamenti né antivirus per timore di fermare la produzione. Va censito, protetto (antivirus/whitelisting compatibile OT) e isolato dalla rete IT il più possibile.',
+  n:'IEC 62443-3-3: SR 3.2 (protezione da codice malevolo) · IEC 62443-2-3: gestione delle patch negli IACS.'},
+ {id:'wifi',     t:'La macchina usa reti wireless?', s:'Wi-Fi di cella, ponti radio, tablet/palmari collegati via wireless.',
+  e:'Una rete wireless estende il perimetro della macchina oltre le barriere fisiche: si può tentare l\'accesso dal parcheggio, senza entrare in stabilimento. Se il Wi-Fi serve, va protetto con cifratura moderna (WPA2/WPA3 enterprise), chiavi non condivise e separazione dalla rete di controllo.',
+  n:'IEC 62443-3-3: SR 1.6 (gestione degli accessi wireless), SR 2.2 (controllo dell\'uso wireless).'},
+ {id:'internet', t:'Servizi della macchina sono raggiungibili direttamente da Internet?', s:'Port forwarding sul router, HMI o webserver pubblicati senza VPN.',
+  e:'Un HMI o un webserver pubblicato su Internet con port forwarding è individuabile in pochi minuti con motori di ricerca specializzati (es. Shodan) e diventa bersaglio di tentativi di accesso automatici continui. È una pratica da eliminare: qualsiasi accesso dall\'esterno deve passare da una VPN autenticata. Se rispondi "Sì", questo scenario sale automaticamente di probabilità.',
+  n:'IEC 62443-3-3: SR 1.13 (accesso da reti non fidate) · Reg. (UE) 2023/1230, RESS 1.1.9: la connettività non deve compromettere sicurezza e salute.'},
+ {id:'segment',  t:'Esiste una segmentazione tra rete macchina e altre reti (firewall/VLAN)?', s:'Firewall industriale, router con regole, VLAN dedicate, DMZ.',
+  e:'La segmentazione è la contromisura più efficace in ambito OT: dividere le reti in zone separate da firewall (il concetto stesso di "zone & conduits" della 62443) impedisce a un attacco di propagarsi. "Rete piatta" = tutto collegato a tutto = un solo punto compromesso espone l\'intera macchina. Se rispondi "Sì", la probabilità degli scenari di propagazione IT→OT si riduce.',
+  n:'IEC 62443-3-2: ZCR 3 (partizionamento) · IEC 62443-3-3: SR 5.1–5.4 (segmentazione, protezione dei confini di zona).'},
+ {id:'password', t:'Le password di default di PLC/HMI/router sono state cambiate?', s:'Credenziali di fabbrica sostituite, account personali invece che condivisi.',
+  e:'Le credenziali di fabbrica (admin/admin e simili) sono pubblicate nei manuali scaricabili da chiunque: lasciarle attive equivale a non avere alcuna protezione. Buona pratica: password robuste e diverse per dispositivo, account nominali invece che condivisi, elenco credenziali custodito in modo sicuro e consegnato al cliente.',
+  n:'IEC 62443-3-3: SR 1.1 (identificazione e autenticazione), SR 1.5 (gestione degli autenticatori) · IEC 62443-4-2: CR 1.5 per i singoli componenti.'},
+ {id:'patch',    t:'Esiste un processo di aggiornamento firmware/software (patch)?', s:'Aggiornamenti periodici pianificati di PLC, HMI, sistema operativo, antivirus.',
+  e:'Le vulnerabilità note dei dispositivi industriali sono catalogate pubblicamente (CVE) con tanto di istruzioni di sfruttamento: un firmware fermo da anni le contiene quasi certamente. In OT non si aggiorna "alla cieca" come in IT: serve un processo pianificato (finestre di fermo, test, rollback) concordato tra costruttore e utilizzatore.',
+  n:'IEC 62443-2-3: gestione delle patch negli IACS · IEC 62443-3-3: SR 3.4 (integrità del software) · Il CRA (Reg. UE 2024/2847) imporrà ai produttori aggiornamenti di sicurezza per l\'intero ciclo di vita.'},
+ {id:'backup',   t:'Esistono backup regolari e testati di programmi PLC/HMI?', s:'Copie di progetto archiviate, procedura di ripristino provata.',
+  e:'Dopo un incidente (cyber o guasto), la differenza tra un fermo di ore e uno di settimane è la disponibilità di backup aggiornati e di una procedura di ripristino provata almeno una volta. Un backup mai testato, o custodito solo sul portatile di un tecnico, non conta come backup. Se rispondi "Sì", lo scenario di mancato ripristino scende di probabilità.',
+  n:'IEC 62443-3-3: SR 7.3 (backup del sistema di controllo), SR 7.4 (ripristino e ricostituzione).'},
+ {id:'fisico',   t:'L\'accesso fisico a quadro e porte di rete è controllato?', s:'Quadro chiuso a chiave, porte switch non accessibili, area recintata.',
+  e:'Chi accede fisicamente al quadro può collegare un dispositivo direttamente al PLC, scavalcando ogni protezione di rete: la sicurezza fisica è il primo anello della "difesa in profondità". Misure semplici e a basso costo: quadro chiuso a chiave, porte switch inutilizzate disabilitate, presa di servizio su rete separata.',
+  n:'IEC 62443-1-1: principio di defense-in-depth · EN 60204-1: accesso all\'equipaggiamento elettrico riservato a personale autorizzato.'},
+ {id:'terzi',    t:'Sono integrati componenti di terze parti con proprio software?', s:'Robot, sistemi di visione, pese, unità con firmware/controller propri.',
+  e:'Ogni componente di terze parti con software proprio (robot, visione, pesatura) porta con sé le vulnerabilità del suo fornitore, che tu non controlli direttamente. Il rischio "supply chain" si gestisce chiedendo ai fornitori evidenze di sviluppo sicuro, tracciando versioni e componenti installati, e includendo questi asset nell\'inventario.',
+  n:'IEC 62443-4-1: sviluppo sicuro del prodotto · CRA (Reg. UE 2024/2847): obblighi di cybersecurity per i prodotti con elementi digitali · Direttiva NIS2: sicurezza della catena di fornitura.'}
+];
+/* Risposte: 'si' | 'no' | 'ns' (non so). 'ns' = conservativo */
+
+/* ================= LIBRERIA MINACCE (con condizioni) =================
+   cond: funzione(ans) → true se lo scenario è pertinente
+   padj: funzione(ans) → aggiustamento probabilità (+/-)
+   zona: chiave zona suggerita: CTRL | SUP | REM                       */
+const LIB=[
+ {k:'usb',    zona:'SUP', m:'Malware introdotto tramite USB o supporti rimovibili su HMI/PC industriale', v:'Porte USB attive, assenza di controllo supporti rimovibili', c:'Compromissione HMI, fermo macchina, possibile manipolazione parametri', i:3,p:4,
+   cond:a=>a.hmi!=='no'&&a.usb!=='no', padj:a=>0},
+ {k:'remoto', zona:'REM', m:'Accesso remoto di teleassistenza non protetto o sempre attivo', v:'VPN/router remoto senza autenticazione forte, connessione permanente', c:'Accesso non autorizzato al PLC, modifica programma, fermo impianto', i:4,p:3,
+   cond:a=>a.remoto!=='no', padj:a=>0},
+ {k:'pwd',    zona:'CTRL', m:'Credenziali di default o deboli su dispositivi di rete e HMI', v:'Password di fabbrica mai cambiate, account condivisi', c:'Accesso non autorizzato a configurazioni e parametri di sicurezza', i:3,p:4,
+   cond:a=>true, padj:a=>a.password==='si'?-2:0},
+ {k:'patch',  zona:'CTRL', m:'Firmware/OS non aggiornati con vulnerabilità note (CVE)', v:'Assenza di processo di patch management OT', c:'Sfruttamento vulnerabilità note, compromissione dispositivi', i:3,p:3,
+   cond:a=>true, padj:a=>a.patch==='si'?-1:0},
+ {k:'flat',   zona:'CTRL', m:'Rete piatta senza segmentazione tra IT e OT', v:'Assenza di firewall/DMZ tra rete ufficio e rete macchina', c:'Propagazione di attacchi IT (es. ransomware) verso la rete di controllo', i:4,p:3,
+   cond:a=>a.reteIT!=='no', padj:a=>a.segment==='si'?-2:0},
+ {k:'proto',  zona:'CTRL', m:'Protocolli industriali non autenticati/cifrati (PROFINET, Modbus TCP)', v:'Protocolli legacy senza autenticazione nativa', c:'Spoofing/manomissione comandi, manipolazione I/O', i:4,p:2,
+   cond:a=>true, padj:a=>a.fisico==='si'&&a.segment==='si'?-1:0},
+ {k:'fisico', zona:'CTRL', m:'Accesso fisico non controllato a quadro elettrico e porte di rete', v:'Quadro non chiuso a chiave, porte switch libere accessibili', c:'Collegamento dispositivi non autorizzati, accesso diretto al PLC', i:3,p:3,
+   cond:a=>a.fisico!=='si', padj:a=>0},
+ {k:'ransom', zona:'SUP', m:'Ransomware propagato dalla rete IT verso PC SCADA/supervisione', v:'PC supervisione con accesso a rete IT, protezioni endpoint assenti', c:'Cifratura PC supervisione, perdita ricette e storici, fermo produzione', i:4,p:3,
+   cond:a=>a.scadaWin!=='no'&&a.reteIT!=='no', padj:a=>a.segment==='si'?-1:0},
+ {k:'wifi',   zona:'CTRL', m:'Rete wireless di macchina non protetta o con cifratura debole', v:'Wi-Fi con cifratura obsoleta o chiave condivisa nota', c:'Accesso alla rete di cella da esterno perimetro fisico', i:3,p:2,
+   cond:a=>a.wifi!=='no', padj:a=>0},
+ {k:'supply', zona:'CTRL', m:'Compromissione nella supply chain (componenti o software di terze parti)', v:'Assenza di verifica integrità firmware e software installato', c:'Backdoor o malware preinstallato in componenti di macchina', i:4,p:1,
+   cond:a=>a.terzi!=='no', padj:a=>0},
+ {k:'inet',   zona:'REM', m:'HMI o servizi di macchina esposti su Internet', v:'Port forwarding diretto senza VPN, servizi pubblicati per comodità', c:'Accesso diretto da Internet a supervisione e controllo', i:4,p:2,
+   cond:a=>a.internet!=='no', padj:a=>a.internet==='si'?1:0},
+ {k:'backup', zona:'CTRL', m:'Assenza di backup e procedura di ripristino di programmi PLC/HMI', v:'Backup non eseguiti o non testati, copie solo sul PC del tecnico', c:'Impossibilità di ripristino rapido dopo incidente, fermo prolungato', i:3,p:3,
+   cond:a=>true, padj:a=>a.backup==='si'?-2:0}
+];
+
+/* ================= STATE ================= */
+let state=defaultState();
+let nextId={asset:100, zona:1, conduit:1, scen:1000};
+
+function defaultState(){return{
+  meta:{tool:'Documentor CyberRA',ver:'2.0',created:new Date().toISOString()},
+  progetto:{nome:'',macchina:'',costruttore:'',commessa:'',autore:'',revisione:'Rev. 0',data:new Date().toISOString().slice(0,10),descrizione:''},
+  suc:{perimetroFisico:'',perimetroLogico:'',esclusioni:''},
+  assunzioni:[],dipendenze:[],
+  sogliaRischio:4,
+  answers:{},
+  generated:false,
+  assets:[],zone:[],conduits:[],scenari:[]
+};}
+
+/* ================= PERSISTENZA ================= */
+let saveTimer=null;
+function save(){
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{
+    state.meta.updated=new Date().toISOString();
+    try{localStorage.setItem(LSKEY,JSON.stringify({state,nextId}));
+      document.getElementById('saveStatus').textContent='✓ salvato '+new Date().toLocaleTimeString('it-IT');
+    }catch(e){document.getElementById('saveStatus').textContent='⚠ salvataggio fallito';}
+    renderProgress();
+  },400);
+}
+function load(){
+  try{const raw=localStorage.getItem(LSKEY);
+    if(raw){const d=JSON.parse(raw);state=Object.assign(defaultState(),d.state);nextId=Object.assign(nextId,d.nextId);}
+  }catch(e){}
+}
+
+/* ================= BINDING ================= */
+function bindFields(){
+  document.querySelectorAll('[data-bind]').forEach(el=>{
+    const path=el.dataset.bind.split('.');
+    const get=()=>path.length===2?state[path[0]][path[1]]:state[path[0]];
+    const set=v=>{if(path.length===2)state[path[0]][path[1]]=v;else state[path[0]]=(path[0]==='sogliaRischio')?parseInt(v):v;};
+    el.value=get()??'';
+    el.addEventListener('input',()=>{set(el.value);save();
+      if(path[0]==='sogliaRischio'){renderMatrixPreview();renderScenari();}
+      renderChecks();});
+  });
+}
+
+/* ================= LISTE ================= */
+function renderList(key){
+  const box=document.getElementById(key+'List');box.innerHTML='';
+  state[key].forEach((v,i)=>{
+    const row=document.createElement('div');row.className='itemrow';
+    const inp=document.createElement('input');inp.value=v;
+    inp.addEventListener('input',()=>{state[key][i]=inp.value;save();});
+    const del=document.createElement('button');del.textContent='✕';del.title='Rimuovi';
+    del.onclick=()=>{state[key].splice(i,1);renderList(key);save();};
+    row.append(inp,del);box.appendChild(row);
+  });
+}
+function addListItem(key){state[key].push('');renderList(key);save();}
+function addPreset(key,text){
+  if(state[key].includes(text))return;
+  state[key].push(text);renderList(key);save();
+}
+
+/* ================= RISCHIO ================= */
+function riskScore(i,p){return i*p;}
+function riskClass(s){
+  if(s<=state.sogliaRischio)return{cls:'r-toll',lab:'Tollerabile',col:'var(--ok)'};
+  if(s<=4)return{cls:'r-basso',lab:'Basso',col:'var(--low)'};
+  if(s<=9)return{cls:'r-medio',lab:'Medio',col:'var(--med)'};
+  if(s<=14)return{cls:'r-alto',lab:'Alto',col:'var(--high)'};
+  return{cls:'r-crit',lab:'Critico',col:'var(--crit)'};
+}
+function riskBadge(i,p){
+  if(!i||!p)return'<span class="mono" style="color:var(--muted)">—</span>';
+  const s=riskScore(i,p),rc=riskClass(s);
+  return`<span class="risk ${rc.cls}" title="${rc.lab} (I${i}×P${p})">${s}</span>`;
+}
+function renderMatrixPreview(){
+  let h='<table class="matrix"><tr><th>I \\ P</th>';
+  for(let p=1;p<=5;p++)h+=`<th>${p}</th>`;h+='</tr>';
+  for(let i=4;i>=1;i--){h+=`<tr><th>${i}</th>`;
+    for(let p=1;p<=5;p++){const s=i*p,rc=riskClass(s);
+      h+=`<td style="background:${rc.col}${rc.cls==='r-medio'?';color:#1B2B38':''}">${s}</td>`;}
+    h+='</tr>';}
+  h+='</table><div class="hint" style="margin-top:6px">Impatto (righe 1–4) × Probabilità (colonne 1–5). Verde scuro = tollerabile (≤ soglia).</div>';
+  document.getElementById('matrixPreview').innerHTML=h;
+}
+
+/* ================= INTERVISTA ================= */
+function renderQuiz(){
+  const box=document.getElementById('quizBox');
+  let h='<h3>Domande sulla macchina</h3>';
+  QUESTIONS.forEach(q=>{
+    const a=state.answers[q.id];
+    h+=`<div class="qrow">
+      <div class="qtxt"><div class="qt">${q.t}</div><div class="qs">${q.s}</div></div>
+      <div class="qopts">
+        <button class="${a==='si'?'sel-si':''}" onclick="answer('${q.id}','si')">Sì</button>
+        <button class="${a==='no'?'sel-no':''}" onclick="answer('${q.id}','no')">No</button>
+        <button class="${a==='ns'?'sel-ns':''}" onclick="answer('${q.id}','ns')">Non so</button>
+      </div>
+      <details class="qexp"><summary>Spiegazione e riferimenti normativi</summary>
+        <div class="qebody">${q.e}<span class="norm"><b>Riferimenti:</b> ${q.n}</span></div>
+      </details></div>`;
+  });
+  box.innerHTML=h;
+  const answered=QUESTIONS.filter(q=>state.answers[q.id]).length;
+  const st=document.getElementById('quizStatus');
+  st.innerHTML=answered<QUESTIONS.length
+    ? `Risposte: <b>${answered}/${QUESTIONS.length}</b> — completa tutte le domande per generare la bozza.`
+    : (state.generated?'✓ Bozza già generata. Puoi rigenerarla: gli elementi <span class="tag auto">auto</span> esistenti verranno sostituiti, quelli inseriti a mano restano.':'✓ Tutte le domande completate: genera la bozza.');
+  document.getElementById('genBtn').disabled=answered<QUESTIONS.length;
+}
+function answer(id,val){state.answers[id]=val;save();renderQuiz();renderChecks();}
+
+/* ================= GENERAZIONE BOZZA ================= */
+function generateDraft(){
+  const a=state.answers;
+  if(state.generated&&!confirm('Rigenerare la bozza? Gli elementi marcati "auto" verranno sostituiti; asset, zone e scenari inseriti manualmente restano invariati.'))return;
+
+  /* rimuovi elementi auto precedenti */
+  state.zone=state.zone.filter(z=>!z.auto);
+  state.conduits=state.conduits.filter(c=>!c.auto);
+  state.scenari=state.scenari.filter(s=>!s.auto);
+
+  /* --- zone proposte --- */
+  const mkZone=(key,nome,desc,slBase)=>{
+    const z={id:'Z'+nextId.zona++,key,nome,descrizione:desc,colore:ZCOLORS[(state.zone.length)%ZCOLORS.length],slT:{},slSug:{},auto:true};
+    FRS.forEach(fr=>{z.slT[fr]=slBase[fr]??1;z.slSug[fr]=slBase[fr]??1;});
+    state.zone.push(z);return z;
+  };
+  const zoneMap={};
+  zoneMap.CTRL=mkZone('CTRL','Zona Controllo','PLC, Safety PLC, I/O, drive — logica di controllo e sicurezza della macchina',
+    {FR1_IAC:2,FR2_UC:2,FR3_SI:2,FR4_DC:1,FR5_RDF:2,FR6_TRE:1,FR7_RA:2});
+  if(a.hmi!=='no'){
+    zoneMap.SUP=mkZone('SUP','Zona Supervisione','HMI, PC SCADA, postazioni operatore',
+      {FR1_IAC:2,FR2_UC:2,FR3_SI:2,FR4_DC:1,FR5_RDF:1,FR6_TRE:1,FR7_RA:1});
+  }
+  if(a.remoto!=='no'){
+    zoneMap.REM=mkZone('REM','Zona Teleassistenza','Router/gateway di accesso remoto — punto di ingresso dall\'esterno',
+      {FR1_IAC:2,FR2_UC:2,FR3_SI:1,FR4_DC:2,FR5_RDF:2,FR6_TRE:2,FR7_RA:1});
+  }
+  /* rinforzo SL se esposizione Internet */
+  if(a.internet==='si'&&zoneMap.REM){FRS.forEach(fr=>{zoneMap.REM.slT[fr]=Math.max(zoneMap.REM.slT[fr],2);zoneMap.REM.slSug[fr]=zoneMap.REM.slT[fr];});}
+
+  /* --- conduits proposti --- */
+  const mkCond=(nome,za,zb,tipo,prot)=>{state.conduits.push({id:'C'+nextId.conduit++,nome,zonaA:za,zonaB:zb,tipo,protocolli:prot,note:'',auto:true});};
+  if(zoneMap.SUP)mkCond('Controllo ↔ Supervisione',zoneMap.CTRL.id,zoneMap.SUP.id,'Rete cablata','PROFINET / OPC UA');
+  if(zoneMap.REM)mkCond('Teleassistenza ↔ Controllo',zoneMap.REM.id,zoneMap.CTRL.id,'VPN / accesso remoto','VPN, HTTPS');
+  if(a.reteIT!=='no'&&zoneMap.SUP)mkCond('Supervisione ↔ Rete IT cliente (esterna al SUC)',zoneMap.SUP.id,'','Rete cablata','SMB, MQTT, OPC UA');
+  if(a.wifi==='si')mkCond('Rete wireless di macchina',zoneMap.CTRL.id,zoneMap.SUP?zoneMap.SUP.id:'','Rete wireless','Wi-Fi');
+
+  /* --- scenari pertinenti --- */
+  let n=0;
+  LIB.forEach(l=>{
+    if(!l.cond(a))return;
+    let p=l.p+l.padj(a);
+    p=Math.max(1,Math.min(5,p));
+    const zid=zoneMap[l.zona]?zoneMap[l.zona].id:zoneMap.CTRL.id;
+    state.scenari.push({id:'S'+nextId.scen++,zonaId:zid,minaccia:l.m,vulnerabilita:l.v,conseguenza:l.c,imp:l.i,prob:p,misure:'',impRes:null,probRes:null,stato:'Aperto',auto:true});
+    n++;
+  });
+
+  /* --- assunzioni suggerite dalle risposte positive --- */
+  const sugg=[];
+  if(a.segment==='si')sugg.push('La segmentazione di rete dichiarata (firewall/VLAN) è mantenuta attiva dal cliente.');
+  if(a.backup==='si')sugg.push('I backup di programmi PLC/HMI sono eseguiti e verificati periodicamente.');
+  if(a.password==='si')sugg.push('Le credenziali di default risultano sostituite su tutti i dispositivi.');
+  sugg.forEach(s=>{if(!state.assunzioni.includes(s))state.assunzioni.push(s);});
+
+  state.generated=true;
+  save();
+  renderZone();renderConduits();renderScenari();renderSL();renderList('assunzioni');renderQuiz();renderChecks();
+  alert('Bozza generata:\n• '+state.zone.filter(z=>z.auto).length+' zone\n• '+state.conduits.filter(c=>c.auto).length+' conduits\n• '+n+' scenari di rischio pertinenti\n• SL-T suggeriti per zona\n\nOra prosegui con i passi successivi per rifinire.');
+  goStep(2);
+}
+
+/* ================= MODAL ================= */
+function openModal(html){document.getElementById('modalBox').innerHTML=html;document.getElementById('overlay').classList.add('show');}
+function closeModal(){document.getElementById('overlay').classList.remove('show');}
+document.getElementById('overlay').addEventListener('click',e=>{if(e.target.id==='overlay')closeModal();});
+
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function zoneOptions(sel){return'<option value="">— nessuna —</option>'+state.zone.map(z=>`<option value="${z.id}" ${z.id===sel?'selected':''}>${esc(z.nome)}</option>`).join('');}
+function zoneName(id){if(!id)return'— esterna —';const z=state.zone.find(z=>z.id===id);return z?z.nome:'—';}
+function zoneDot(id){const z=state.zone.find(z=>z.id===id);return z?`<span class="zdot" style="background:${z.colore}"></span>`:'';}
+function autoTag(x){return x.auto?' <span class="tag auto">auto</span>':'';}
+
+/* ================= TEMPLATE ASSET ================= */
+/* zk: chiave zona suggerita (CTRL/SUP/REM) — assegnata se la zona esiste */
+const ASSET_TPL=[
+ {g:'Controllo',   nome:'PLC principale',            tipo:'PLC',            produttore:'Siemens', modello:'S7-1500',        rete:'PROFINET cella', zk:'CTRL'},
+ {g:'Controllo',   nome:'Safety PLC / CPU F',        tipo:'Safety PLC',     produttore:'Siemens', modello:'S7-1515F',       rete:'PROFINET/PROFIsafe', zk:'CTRL'},
+ {g:'Controllo',   nome:'I/O remoto',                tipo:'I/O remoto',     produttore:'Siemens', modello:'ET200SP',        rete:'PROFINET cella', zk:'CTRL'},
+ {g:'Controllo',   nome:'Drive / Inverter',          tipo:'Drive/Inverter', produttore:'Siemens', modello:'G120',           rete:'PROFINET cella', zk:'CTRL'},
+ {g:'Controllo',   nome:'Robot / unità terze parti', tipo:'Robot',          produttore:'',        modello:'',               rete:'PROFINET cella', zk:'CTRL', note:'Componente di terze parti con software proprio'},
+ {g:'Supervisione',nome:'HMI pannello operatore',    tipo:'HMI',            produttore:'Siemens', modello:'TP1200 Comfort', rete:'PROFINET cella', zk:'SUP'},
+ {g:'Supervisione',nome:'PC SCADA / supervisione',   tipo:'SCADA/PC',       produttore:'',        modello:'PC industriale Windows', rete:'Rete supervisione', zk:'SUP', note:'Verificare antivirus/whitelisting e stato aggiornamenti'},
+ {g:'Supervisione',nome:'Runtime SCADA',             tipo:'Software',       produttore:'Siemens', modello:'WinCC',          rete:'', zk:'SUP'},
+ {g:'Rete',        nome:'Switch di macchina',        tipo:'Switch',         produttore:'Siemens', modello:'Scalance X208',  rete:'PROFINET cella', zk:'CTRL'},
+ {g:'Rete',        nome:'Firewall / router di cella',tipo:'Router/Firewall',produttore:'Siemens', modello:'Scalance S615',  rete:'Confine cella ↔ esterno', zk:'CTRL', note:'Punto di segmentazione: censire le regole attive'},
+ {g:'Teleassistenza',nome:'Router teleassistenza',   tipo:'Gateway/Edge',   produttore:'HMS/Ewon',modello:'Ewon Cosy',      rete:'VPN fornitore',  zk:'REM',  note:'Verificare autenticazione e attivazione su richiesta'},
+ {g:'Teleassistenza',nome:'Gateway IoT / Edge',      tipo:'Gateway/Edge',   produttore:'',        modello:'',               rete:'Uplink cloud',   zk:'REM'},
+ {g:'Campo',       nome:'Sistema di visione',        tipo:'Sensore intelligente', produttore:'',  modello:'',               rete:'Rete cella/GigE', zk:'CTRL', note:'Componente di terze parti con software proprio'},
+ {g:'Campo',       nome:'Pesa / strumento in rete',  tipo:'Sensore intelligente', produttore:'',  modello:'',               rete:'Rete cella',      zk:'CTRL'}
+];
+const KIT_TIPICO=[0,1,3,5,8,10]; /* indici: PLC, Safety, drive, HMI, switch, router tele */
+
+function zoneIdByKey(k){const z=state.zone.find(z=>z.key===k);return z?z.id:'';}
+function openTemplateModal(){
+  let h='<h3>Aggiungi asset da template</h3><p class="hint" style="margin-bottom:10px">Clicca un template per aprirlo precompilato (modifichi modello, versione, IP e salvi), oppure aggiungi in un colpo solo il kit di una macchina tipica.</p>';
+  h+='<div class="toolbar" style="margin-bottom:14px"><button class="btn acc" onclick="addKit()">⚡ Aggiungi kit macchina tipica ('+KIT_TIPICO.length+' asset)</button></div>';
+  let lastG='';
+  h+='<table>';
+  ASSET_TPL.forEach((t,i)=>{
+    if(t.g!==lastG){h+=`<tr><th colspan="3">${t.g}</th></tr>`;lastG=t.g;}
+    h+=`<tr style="cursor:pointer" onclick="pickTemplate(${i})"><td><strong>${esc(t.nome)}</strong></td><td>${esc(t.tipo)}</td><td class="mono">${esc(t.produttore)} ${esc(t.modello)}</td></tr>`;
+  });
+  h+='</table><div class="actions"><button class="btn ghost" onclick="closeModal()">Chiudi</button></div>';
+  openModal(h);
+}
+function tplToAsset(t){
+  return{id:'A'+nextId.asset,nome:t.nome,tipo:t.tipo,produttore:t.produttore||'',modello:t.modello||'',versione:'',rete:t.rete||'',ip:'',zonaId:zoneIdByKey(t.zk),note:t.note||''};
+}
+function pickTemplate(i){
+  openAssetModal('',tplToAsset(ASSET_TPL[i]));
+}
+function addKit(){
+  if(!confirm('Aggiungere '+KIT_TIPICO.length+' asset tipici (PLC, Safety PLC, drive, HMI, switch, router teleassistenza)? Potrai poi modificarli o eliminarli.'))return;
+  KIT_TIPICO.forEach(i=>{const a=tplToAsset(ASSET_TPL[i]);a.id='A'+nextId.asset++;state.assets.push(a);});
+  closeModal();renderAssets();renderZone();save();renderChecks();
+}
+
+/* ================= ASSET ================= */
+const ASSET_TIPI=['PLC','Safety PLC','HMI','SCADA/PC','Drive/Inverter','Switch','Router/Firewall','Gateway/Edge','Robot','Sensore intelligente','I/O remoto','Software','Altro'];
+function openAssetModal(id,tpl){
+  const a=id?state.assets.find(x=>x.id===id):(tpl||{id:'A'+(nextId.asset),nome:'',tipo:'PLC',produttore:'',modello:'',versione:'',rete:'',ip:'',zonaId:'',note:''});
+  openModal(`<h3>${id?'Modifica':'Nuovo'} asset</h3>
+  <div class="grid2">
+    <div class="fld"><label>ID</label><input id="m_id" value="${esc(a.id)}" ${id?'readonly':''}></div>
+    <div class="fld"><label>Nome</label><input id="m_nome" value="${esc(a.nome)}" placeholder="Es. PLC linea 1"></div>
+    <div class="fld"><label>Tipo</label><select id="m_tipo">${ASSET_TIPI.map(t=>`<option ${t===a.tipo?'selected':''}>${t}</option>`).join('')}</select></div>
+    <div class="fld"><label>Produttore</label><input id="m_prod" value="${esc(a.produttore)}" placeholder="Es. Siemens"></div>
+    <div class="fld"><label>Modello</label><input id="m_mod" value="${esc(a.modello)}" placeholder="Es. S7-1515F"></div>
+    <div class="fld"><label>Versione FW/SW</label><input id="m_ver" value="${esc(a.versione)}"></div>
+    <div class="fld"><label>Rete</label><input id="m_rete" value="${esc(a.rete)}" placeholder="Es. PROFINET cella"></div>
+    <div class="fld"><label>IP / Indirizzo</label><input id="m_ip" value="${esc(a.ip)}" class="mono"></div>
+    <div class="fld"><label>Zona</label><select id="m_zona">${zoneOptions(a.zonaId)}</select></div>
+  </div>
+  <div class="fld"><label>Note</label><textarea id="m_note">${esc(a.note)}</textarea></div>
+  <div class="actions"><button class="btn ghost" onclick="closeModal()">Annulla</button>
+  <button class="btn acc" onclick="saveAsset('${id||''}')">Salva asset</button></div>`);
+}
+function saveAsset(id){
+  const g=x=>document.getElementById(x).value.trim();
+  const obj={id:g('m_id')||'A'+nextId.asset,nome:g('m_nome'),tipo:document.getElementById('m_tipo').value,
+    produttore:g('m_prod'),modello:g('m_mod'),versione:g('m_ver'),rete:g('m_rete'),ip:g('m_ip'),
+    zonaId:document.getElementById('m_zona').value,note:g('m_note')};
+  if(!obj.nome){alert('Inserisci il nome asset.');return;}
+  if(id){Object.assign(state.assets.find(x=>x.id===id),obj);}
+  else{state.assets.push(obj);nextId.asset++;}
+  closeModal();renderAssets();renderZone();save();renderChecks();
+}
+function delAsset(id){if(confirm('Eliminare asset '+id+'?')){state.assets=state.assets.filter(a=>a.id!==id);renderAssets();renderZone();save();renderChecks();}}
+function renderAssets(){
+  const tb=document.querySelector('#assetTable tbody');tb.innerHTML='';
+  document.getElementById('assetEmpty').style.display=state.assets.length?'none':'block';
+  state.assets.forEach(a=>{
+    tb.insertAdjacentHTML('beforeend',`<tr>
+      <td class="mono">${esc(a.id)}</td><td><strong>${esc(a.nome)}</strong></td><td>${esc(a.tipo)}</td>
+      <td>${esc(a.produttore)} ${esc(a.modello)}</td><td class="mono">${esc(a.versione)}</td>
+      <td class="mono">${esc(a.rete)}${a.ip?'<br>'+esc(a.ip):''}</td>
+      <td>${zoneDot(a.zonaId)}${esc(zoneName(a.zonaId))}</td>
+      <td style="white-space:nowrap"><button class="btn ghost" style="padding:3px 8px" onclick="openAssetModal('${a.id}')">✎</button>
+      <button class="btn danger" style="padding:3px 8px" onclick="delAsset('${a.id}')">✕</button></td></tr>`);
+  });
+}
+function exportCSVAssets(){
+  const rows=[['ID','Nome','Tipo','Produttore','Modello','Versione','Rete','IP','Zona','Note'],
+    ...state.assets.map(a=>[a.id,a.nome,a.tipo,a.produttore,a.modello,a.versione,a.rete,a.ip,zoneName(a.zonaId),a.note])];
+  const csv=rows.map(r=>r.map(c=>'"'+String(c??'').replace(/"/g,'""')+'"').join(';')).join('\r\n');
+  download('asset-inventory.csv','\uFEFF'+csv,'text/csv');
+}
+
+/* ================= ZONE ================= */
+function openZoneModal(id){
+  const z=id?state.zone.find(x=>x.id===id):{id:'Z'+nextId.zona,nome:'',descrizione:'',colore:ZCOLORS[(state.zone.length)%ZCOLORS.length],slT:{}};
+  openModal(`<h3>${id?'Modifica':'Nuova'} zona</h3>
+  <div class="grid2">
+    <div class="fld"><label>ID</label><input id="m_id" value="${esc(z.id)}" readonly></div>
+    <div class="fld"><label>Nome zona</label><input id="m_nome" value="${esc(z.nome)}" placeholder="Es. Zona Controllo"></div>
+  </div>
+  <div class="fld"><label>Descrizione</label><textarea id="m_desc">${esc(z.descrizione)}</textarea></div>
+  <div class="fld"><label>Colore</label><input type="color" id="m_col" value="${z.colore}" style="width:60px;height:34px;padding:2px"></div>
+  <div class="actions"><button class="btn ghost" onclick="closeModal()">Annulla</button>
+  <button class="btn acc" onclick="saveZone('${id||''}')">Salva zona</button></div>`);
+}
+function saveZone(id){
+  const nome=document.getElementById('m_nome').value.trim();
+  if(!nome){alert('Inserisci il nome zona.');return;}
+  if(id){const z=state.zone.find(x=>x.id===id);z.nome=nome;z.descrizione=document.getElementById('m_desc').value;z.colore=document.getElementById('m_col').value;z.auto=false;}
+  else{state.zone.push({id:'Z'+nextId.zona,nome,descrizione:document.getElementById('m_desc').value,colore:document.getElementById('m_col').value,slT:{},auto:false});nextId.zona++;}
+  closeModal();renderZone();renderAssets();renderSL();save();renderChecks();
+}
+function delZone(id){
+  if(!confirm('Eliminare la zona? Gli asset resteranno senza zona.'))return;
+  state.zone=state.zone.filter(z=>z.id!==id);
+  state.assets.forEach(a=>{if(a.zonaId===id)a.zonaId='';});
+  state.conduits=state.conduits.filter(c=>c.zonaA!==id&&c.zonaB!==id);
+  state.scenari.forEach(s=>{if(s.zonaId===id)s.zonaId='';});
+  renderZone();renderAssets();renderConduits();renderScenari();renderSL();save();renderChecks();
+}
+function renderZone(){
+  const tb=document.querySelector('#zoneTable tbody');tb.innerHTML='';
+  document.getElementById('zoneEmpty').style.display=state.zone.length?'none':'block';
+  state.zone.forEach(z=>{
+    const na=state.assets.filter(a=>a.zonaId===z.id).length;
+    tb.insertAdjacentHTML('beforeend',`<tr>
+      <td><span class="zdot" style="background:${z.colore}"></span><strong>${esc(z.nome)}</strong> <span class="mono" style="color:var(--muted)">${z.id}</span>${autoTag(z)}</td>
+      <td>${esc(z.descrizione)}</td><td class="mono">${na}</td>
+      <td style="white-space:nowrap"><button class="btn ghost" style="padding:3px 8px" onclick="openZoneModal('${z.id}')">✎</button>
+      <button class="btn danger" style="padding:3px 8px" onclick="delZone('${z.id}')">✕</button></td></tr>`);
+  });
+  renderSL();
+}
+
+/* ================= CONDUITS ================= */
+function openConduitModal(id){
+  if(state.zone.length<1&&!id){alert('Definisci almeno una zona prima di creare un conduit.');return;}
+  const c=id?state.conduits.find(x=>x.id===id):{id:'C'+nextId.conduit,nome:'',zonaA:'',zonaB:'',tipo:'Rete cablata',protocolli:'',note:''};
+  openModal(`<h3>${id?'Modifica':'Nuovo'} conduit</h3>
+  <div class="grid2">
+    <div class="fld"><label>Nome</label><input id="m_nome" value="${esc(c.nome)}" placeholder="Es. Cella ↔ Supervisione"></div>
+    <div class="fld"><label>Tipo</label><select id="m_tipo">${['Rete cablata','Rete wireless','VPN / accesso remoto','Seriale','USB / media rimovibili','Altro'].map(t=>`<option ${t===c.tipo?'selected':''}>${t}</option>`).join('')}</select></div>
+    <div class="fld"><label>Zona A</label><select id="m_za">${zoneOptions(c.zonaA)}</select></div>
+    <div class="fld"><label>Zona B (vuota = rete esterna)</label><select id="m_zb">${zoneOptions(c.zonaB)}</select></div>
+  </div>
+  <div class="fld"><label>Protocolli</label><input id="m_prot" value="${esc(c.protocolli)}" placeholder="Es. PROFINET, OPC UA, HTTPS"></div>
+  <div class="fld"><label>Note</label><textarea id="m_note">${esc(c.note)}</textarea></div>
+  <div class="actions"><button class="btn ghost" onclick="closeModal()">Annulla</button>
+  <button class="btn acc" onclick="saveConduit('${id||''}')">Salva conduit</button></div>`);
+}
+function saveConduit(id){
+  const obj={nome:document.getElementById('m_nome').value.trim(),tipo:document.getElementById('m_tipo').value,
+    zonaA:document.getElementById('m_za').value,zonaB:document.getElementById('m_zb').value,
+    protocolli:document.getElementById('m_prot').value.trim(),note:document.getElementById('m_note').value.trim(),auto:false};
+  if(!obj.nome){alert('Inserisci il nome conduit.');return;}
+  if(id){Object.assign(state.conduits.find(x=>x.id===id),obj);}
+  else{obj.id='C'+nextId.conduit;state.conduits.push(obj);nextId.conduit++;}
+  closeModal();renderConduits();save();
+}
+function delConduit(id){if(confirm('Eliminare conduit?')){state.conduits=state.conduits.filter(c=>c.id!==id);renderConduits();save();}}
+function renderConduits(){
+  const tb=document.querySelector('#conduitTable tbody');tb.innerHTML='';
+  document.getElementById('conduitEmpty').style.display=state.conduits.length?'none':'block';
+  state.conduits.forEach(c=>{
+    tb.insertAdjacentHTML('beforeend',`<tr>
+      <td><strong>${esc(c.nome)}</strong> <span class="mono" style="color:var(--muted)">${c.id}</span>${autoTag(c)}</td>
+      <td>${zoneDot(c.zonaA)}${esc(zoneName(c.zonaA))} ↔ ${zoneDot(c.zonaB)}${esc(zoneName(c.zonaB))}</td>
+      <td>${esc(c.tipo)}</td><td class="mono">${esc(c.protocolli)}</td>
+      <td style="white-space:nowrap"><button class="btn ghost" style="padding:3px 8px" onclick="openConduitModal('${c.id}')">✎</button>
+      <button class="btn danger" style="padding:3px 8px" onclick="delConduit('${c.id}')">✕</button></td></tr>`);
+  });
+}
+
+/* ================= SCENARI ================= */
+function selNum(id,max,val,labels){let h=`<select id="${id}"><option value="">—</option>`;
+  for(let n=1;n<=max;n++)h+=`<option value="${n}" ${n===val?'selected':''}>${labels[n]}</option>`;return h+'</select>';}
+function openScenarioModal(id){
+  const s=id?state.scenari.find(x=>x.id===id):{id:'S'+nextId.scen,zonaId:'',minaccia:'',vulnerabilita:'',conseguenza:'',imp:null,prob:null,misure:'',impRes:null,probRes:null,stato:'Aperto'};
+  openModal(`<h3>${id?'Modifica':'Nuovo'} scenario di minaccia</h3>
+  <div class="grid2">
+    <div class="fld"><label>ID</label><input value="${esc(s.id)}" readonly></div>
+    <div class="fld"><label>Zona</label><select id="m_zona">${zoneOptions(s.zonaId)}</select></div>
+  </div>
+  <div class="fld"><label>Minaccia / Scenario</label><textarea id="m_min" placeholder="Es. Malware introdotto tramite chiavetta USB su HMI">${esc(s.minaccia)}</textarea></div>
+  <div class="grid2">
+    <div class="fld"><label>Vulnerabilità sfruttata</label><textarea id="m_vul">${esc(s.vulnerabilita)}</textarea></div>
+    <div class="fld"><label>Conseguenza</label><textarea id="m_con">${esc(s.conseguenza)}</textarea></div>
+  </div>
+  <div class="card" style="background:var(--panel)">
+    <h3 style="border:none;padding:0">Rischio iniziale (worst case)</h3>
+    <div class="grid2">
+      <div class="fld"><label>Impatto</label>${selNum('m_imp',4,s.imp,IMPLAB)}</div>
+      <div class="fld"><label>Probabilità</label>${selNum('m_prob',5,s.prob,PROBLAB)}</div>
+    </div>
+  </div>
+  <div class="fld"><label>Contromisure / Mitigazioni (rif. 62443-3-3)</label><textarea id="m_mis" placeholder="Es. Blocco porte USB via policy, whitelist software, formazione operatori">${esc(s.misure)}</textarea></div>
+  <div class="card" style="background:var(--panel)">
+    <h3 style="border:none;padding:0">Rischio residuo</h3>
+    <div class="grid2">
+      <div class="fld"><label>Impatto residuo</label>${selNum('m_impRes',4,s.impRes,IMPLAB)}</div>
+      <div class="fld"><label>Probabilità residua</label>${selNum('m_probRes',5,s.probRes,PROBLAB)}</div>
+    </div>
+  </div>
+  <div class="fld"><label>Stato</label><select id="m_stato">${['Aperto','In mitigazione','Chiuso','Accettato'].map(t=>`<option ${t===s.stato?'selected':''}>${t}</option>`).join('')}</select></div>
+  <div class="actions"><button class="btn ghost" onclick="closeModal()">Annulla</button>
+  <button class="btn acc" onclick="saveScenario('${id||''}')">Salva scenario</button></div>`);
+}
+function saveScenario(id){
+  const gv=x=>{const v=document.getElementById(x).value;return v?parseInt(v):null;};
+  const obj={zonaId:document.getElementById('m_zona').value,
+    minaccia:document.getElementById('m_min').value.trim(),
+    vulnerabilita:document.getElementById('m_vul').value.trim(),
+    conseguenza:document.getElementById('m_con').value.trim(),
+    imp:gv('m_imp'),prob:gv('m_prob'),
+    misure:document.getElementById('m_mis').value.trim(),
+    impRes:gv('m_impRes'),probRes:gv('m_probRes'),
+    stato:document.getElementById('m_stato').value,auto:false};
+  if(!obj.minaccia){alert('Descrivi la minaccia.');return;}
+  if(id){Object.assign(state.scenari.find(x=>x.id===id),obj);}
+  else{obj.id='S'+nextId.scen;state.scenari.push(obj);nextId.scen++;}
+  closeModal();renderScenari();save();renderChecks();
+}
+function delScenario(id){if(confirm('Eliminare scenario '+id+'?')){state.scenari=state.scenari.filter(s=>s.id!==id);renderScenari();save();renderChecks();}}
+function renderScenari(){
+  const tb=document.querySelector('#scenTable tbody');tb.innerHTML='';
+  document.getElementById('scenEmpty').style.display=state.scenari.length?'none':'block';
+  state.scenari.forEach(s=>{
+    tb.insertAdjacentHTML('beforeend',`<tr>
+      <td class="mono">${s.id}${autoTag(s)}</td>
+      <td>${zoneDot(s.zonaId)}${esc(zoneName(s.zonaId))}</td>
+      <td><strong>${esc(s.minaccia)}</strong>${s.conseguenza?'<br><span style="color:var(--muted);font-size:12px">'+esc(s.conseguenza)+'</span>':''}</td>
+      <td>${riskBadge(s.imp,s.prob)}</td>
+      <td style="font-size:12px">${esc(s.misure)}</td>
+      <td>${riskBadge(s.impRes,s.probRes)}</td>
+      <td><span class="tag" style="background:var(--panel);color:var(--steel)">${esc(s.stato)}</span></td>
+      <td style="white-space:nowrap"><button class="btn ghost" style="padding:3px 8px" onclick="openScenarioModal('${s.id}')">✎</button>
+      <button class="btn danger" style="padding:3px 8px" onclick="delScenario('${s.id}')">✕</button></td></tr>`);
+  });
+}
+function loadLibrary(){
+  if(!confirm('Aggiungere tutti i '+LIB.length+' scenari della libreria (anche quelli non pertinenti secondo l\'intervista)?'))return;
+  LIB.forEach(l=>{state.scenari.push({id:'S'+nextId.scen++,zonaId:'',minaccia:l.m,vulnerabilita:l.v,conseguenza:l.c,imp:l.i,prob:l.p,misure:'',impRes:null,probRes:null,stato:'Aperto',auto:false});});
+  renderScenari();save();renderChecks();
+}
+
+/* ================= SECURITY LEVEL ================= */
+function renderSL(){
+  const box=document.getElementById('slZones');box.innerHTML='';
+  document.getElementById('slEmpty').style.display=state.zone.length?'none':'block';
+  state.zone.forEach(z=>{
+    z.slT=z.slT||{};
+    let h=`<div class="card"><h3><span class="zdot" style="background:${z.colore}"></span>${esc(z.nome)}</h3><div class="slgrid">`;
+    FRS.forEach((fr,i)=>{
+      h+=`<div class="slbox"><div class="fr">${FRLAB[i]}</div><select data-zone="${z.id}" data-fr="${fr}">`;
+      for(let sl=0;sl<=4;sl++)h+=`<option value="${sl}" ${(z.slT[fr]??0)===sl?'selected':''}>SL ${sl}</option>`;
+      h+='</select>';
+      if(z.slSug&&z.slSug[fr]!==undefined)h+=`<div class="sug">suggerito: SL ${z.slSug[fr]}</div>`;
+      h+='</div>';
+    });
+    h+='</div></div>';
+    box.insertAdjacentHTML('beforeend',h);
+  });
+  box.querySelectorAll('select').forEach(sel=>{
+    sel.addEventListener('change',()=>{
+      const z=state.zone.find(x=>x.id===sel.dataset.zone);
+      z.slT[sel.dataset.fr]=parseInt(sel.value);save();
+    });
+  });
+}
+
+/* ================= CHECK AVANZAMENTO ================= */
+function checkItems(){
+  const a=state.answers;
+  return[
+    {step:0,ok:!!(state.progetto.nome&&state.progetto.macchina),lab:'Nome progetto e macchina compilati'},
+    {step:0,ok:!!(state.suc.perimetroFisico||state.suc.perimetroLogico),lab:'Perimetro SUC descritto'},
+    {step:1,ok:QUESTIONS.every(q=>a[q.id]),lab:'Intervista completata'},
+    {step:1,ok:state.generated,lab:'Bozza assessment generata'},
+    {step:2,ok:state.assets.length>0,lab:'Almeno un asset inserito'},
+    {step:2,ok:state.assets.length>0&&state.assets.every(x=>x.zonaId),lab:'Tutti gli asset assegnati a una zona'},
+    {step:3,ok:state.zone.length>0,lab:'Zone definite'},
+    {step:4,ok:state.scenari.length>0,lab:'Scenari di rischio presenti'},
+    {step:4,ok:state.scenari.length>0&&state.scenari.every(s=>s.imp&&s.prob),lab:'Rischio iniziale valutato per tutti gli scenari'},
+    {step:4,ok:state.scenari.length>0&&state.scenari.every(s=>s.impRes&&s.probRes),lab:'Rischio residuo valutato per tutti gli scenari'},
+  ];
+}
+function renderChecks(){
+  const items=checkItems();
+  [0,2,3,4,6].forEach(st=>{
+    const el=document.getElementById('check'+st);if(!el)return;
+    const list=st===6?items:items.filter(i=>i.step===st);
+    el.innerHTML='<b>Per completare questo passo:</b><br>'+list.map(i=>`<span class="${i.ok?'ok':'no'}">${i.ok?'✓':'○'} ${i.lab}</span>`).join('<br>');
+  });
+  renderProgress();
+}
+function renderProgress(){
+  const items=checkItems();
+  const pct=Math.round(items.filter(i=>i.ok).length/items.length*100);
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressTxt').textContent='Avanzamento assessment: '+pct+'%';
+  const done={};items.forEach(i=>{done[i.step]=(done[i.step]??true)&&i.ok;});
+  document.querySelectorAll('nav button').forEach(b=>{
+    const st=parseInt(b.dataset.step);
+    b.classList.toggle('done',done[st]===true);
+  });
+}
+
+/* ================= SUMMARY / REPORT ================= */
+function renderSummary(){
+  const open=state.scenari.filter(s=>s.stato==='Aperto'||s.stato==='In mitigazione').length;
+  const overThr=state.scenari.filter(s=>s.impRes&&s.probRes&&riskScore(s.impRes,s.probRes)>state.sogliaRischio).length;
+  document.getElementById('summary').innerHTML=`
+    <div><label>Asset</label><div style="font-size:24px;font-weight:700;font-family:var(--mono)">${state.assets.length}</div></div>
+    <div><label>Zone / Conduits</label><div style="font-size:24px;font-weight:700;font-family:var(--mono)">${state.zone.length} / ${state.conduits.length}</div></div>
+    <div><label>Scenari (aperti)</label><div style="font-size:24px;font-weight:700;font-family:var(--mono)">${state.scenari.length} (${open})</div></div>
+    <div style="grid-column:1/-1"><label>Rischi residui sopra soglia</label>
+    <div style="font-size:16px;font-weight:700;color:${overThr?'var(--crit)':'var(--ok)'}">${overThr?overThr+' scenari da mitigare':'✓ Tutti i rischi residui valutati sono entro la soglia'}</div></div>`;
+}
+
+function printReport(){
+  const p=state.progetto;
+  const rk=(i,pp)=>{if(!i||!pp)return'—';const s=riskScore(i,pp);const rc=riskClass(s);return s+' ('+rc.lab+')';};
+  let h=`<h1>Risk Assessment Cybersecurity OT</h1>
+  <div class="rpt-meta"><strong>${esc(p.nome)||'—'}</strong> — ${esc(p.macchina)||''} · ${esc(p.costruttore)||''}<br>
+  Commessa: ${esc(p.commessa)||'—'} · ${esc(p.revisione)||''} del ${p.data||''} · Autore: ${esc(p.autore)||'—'}<br>
+  Metodologia: IEC 62443-3-2 · Matrice 4×5 · Soglia rischio tollerabile: ${state.sogliaRischio}<br>
+  Documento a supporto del fascicolo tecnico — Regolamento (UE) 2023/1230, All. III RESS 1.1.9 e 1.2.1</div>`;
+
+  h+=`<h2>1. Descrizione e System Under Consideration</h2>
+  <p>${esc(p.descrizione)||'—'}</p>
+  <table><tr><th style="width:25%">Perimetro fisico</th><td>${esc(state.suc.perimetroFisico)||'—'}</td></tr>
+  <tr><th>Perimetro logico</th><td>${esc(state.suc.perimetroLogico)||'—'}</td></tr>
+  <tr><th>Esclusioni</th><td>${esc(state.suc.esclusioni)||'—'}</td></tr></table>`;
+  if(state.assunzioni.length)h+='<p><strong>Assunzioni:</strong></p><ul>'+state.assunzioni.map(a=>'<li>'+esc(a)+'</li>').join('')+'</ul>';
+  if(state.dipendenze.length)h+='<p><strong>Dipendenze esterne:</strong></p><ul>'+state.dipendenze.map(a=>'<li>'+esc(a)+'</li>').join('')+'</ul>';
+
+  /* profilo macchina da intervista */
+  const answered=QUESTIONS.filter(q=>state.answers[q.id]);
+  if(answered.length){
+    h+=`<h2>2. Profilo di esposizione della macchina</h2><table><tr><th>Caratteristica</th><th>Risposta</th></tr>`;
+    answered.forEach(q=>{const v=state.answers[q.id];h+=`<tr><td>${esc(q.t)}</td><td>${v==='si'?'Sì':v==='no'?'No':'Non determinato (assunto worst case)'}</td></tr>`;});
+    h+='</table>';
+  }
+
+  h+=`<h2>3. Asset Inventory</h2><table><tr><th>ID</th><th>Nome</th><th>Tipo</th><th>Produttore/Modello</th><th>Ver.</th><th>Rete/IP</th><th>Zona</th></tr>`;
+  state.assets.forEach(a=>{h+=`<tr><td>${esc(a.id)}</td><td>${esc(a.nome)}</td><td>${esc(a.tipo)}</td><td>${esc(a.produttore)} ${esc(a.modello)}</td><td>${esc(a.versione)}</td><td>${esc(a.rete)} ${esc(a.ip)}</td><td>${esc(zoneName(a.zonaId))}</td></tr>`;});
+  h+='</table>';
+
+  h+=`<h2>4. Zone e Conduits</h2><table><tr><th>Zona</th><th>Descrizione</th><th>N. asset</th></tr>`;
+  state.zone.forEach(z=>{h+=`<tr><td>${esc(z.nome)} (${z.id})</td><td>${esc(z.descrizione)}</td><td>${state.assets.filter(a=>a.zonaId===z.id).length}</td></tr>`;});
+  h+='</table>';
+  if(state.conduits.length){h+='<table><tr><th>Conduit</th><th>Collega</th><th>Tipo</th><th>Protocolli</th></tr>';
+    state.conduits.forEach(c=>{h+=`<tr><td>${esc(c.nome)}</td><td>${esc(zoneName(c.zonaA))} ↔ ${esc(zoneName(c.zonaB))}</td><td>${esc(c.tipo)}</td><td>${esc(c.protocolli)}</td></tr>`;});
+    h+='</table>';}
+
+  h+=`<h2 class="pagebreak">5. Registro scenari e valutazione del rischio</h2>
+  <table><tr><th>ID</th><th>Zona</th><th>Minaccia</th><th>Vulnerabilità</th><th>Conseguenza</th><th>R. iniz.</th><th>Contromisure</th><th>R. res.</th><th>Stato</th></tr>`;
+  state.scenari.forEach(s=>{h+=`<tr><td>${s.id}</td><td>${esc(zoneName(s.zonaId))}</td><td>${esc(s.minaccia)}</td><td>${esc(s.vulnerabilita)}</td><td>${esc(s.conseguenza)}</td><td>${rk(s.imp,s.prob)}</td><td>${esc(s.misure)}</td><td>${rk(s.impRes,s.probRes)}</td><td>${esc(s.stato)}</td></tr>`;});
+  h+='</table>';
+
+  h+=`<h2>6. Security Level Target per zona (IEC 62443-3-3)</h2>
+  <table><tr><th>Zona</th>${FRLAB.map(f=>'<th>'+f+'</th>').join('')}</tr>`;
+  state.zone.forEach(z=>{h+=`<tr><td>${esc(z.nome)}</td>${FRS.map(fr=>'<td style="text-align:center">SL '+(z.slT?.[fr]??0)+'</td>').join('')}</tr>`;});
+  h+='</table>';
+
+  h+=`<h2>7. Conclusioni</h2><p>La valutazione dei rischi cybersecurity è stata condotta secondo la metodologia IEC 62443-3-2 con matrice Impatto × Probabilità 4×5 e soglia di rischio tollerabile pari a ${state.sogliaRischio}. Gli scenari con rischio residuo superiore alla soglia sono soggetti a piano di mitigazione. Il presente documento costituisce evidenza tecnica a supporto della conformità ai requisiti di protezione dalla corruzione (RESS 1.1.9) e di sicurezza e affidabilità dei sistemi di comando (RESS 1.2.1) del Regolamento (UE) 2023/1230.</p>
+  <br><br><table><tr><th style="width:50%">Redatto da</th><th>Approvato da</th></tr><tr><td style="height:50pt">${esc(p.autore)}</td><td></td></tr></table>
+  <p style="font-size:8pt;color:#555;margin-top:8pt">Generato con Documentor CyberRA v2.0 — documentor.it</p>`;
+
+  document.getElementById('report').innerHTML=h;
+  window.print();
+}
+
+/* ================= EXPORT / IMPORT ================= */
+function download(name,content,mime){
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([content],{type:mime}));
+  a.download=name;a.click();URL.revokeObjectURL(a.href);
+}
+function exportJSON(){
+  const name='cyberra_'+(state.progetto.commessa||state.progetto.nome||'progetto').replace(/[^a-z0-9_-]/gi,'_')+'_'+new Date().toISOString().slice(0,10)+'.json';
+  download(name,JSON.stringify({state,nextId},null,2),'application/json');
+}
+function importJSON(ev){
+  const f=ev.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{try{
+    const d=JSON.parse(r.result);
+    if(!d.state||!d.state.progetto)throw new Error('formato non valido');
+    state=Object.assign(defaultState(),d.state);
+    nextId=Object.assign(nextId,d.nextId||{});
+    save();location.reload();
+  }catch(e){alert('File non valido: '+e.message);}};
+  r.readAsText(f);ev.target.value='';
+}
+function resetAll(){
+  if(!confirm('Azzerare tutto il progetto? I dati non esportati andranno persi.'))return;
+  if(!confirm('Confermi? Operazione irreversibile.'))return;
+  localStorage.removeItem(LSKEY);location.reload();
+}
+
+/* ================= NAV & INIT ================= */
+function goStep(n){
+  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('section.step').forEach(x=>x.classList.remove('active'));
+  document.querySelector('nav button[data-step="'+n+'"]').classList.add('active');
+  document.getElementById('step'+n).classList.add('active');
+  if(n===6)renderSummary();
+  renderChecks();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.getElementById('nav').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;goStep(parseInt(b.dataset.step));
+});
+
+load();
+bindFields();
+renderList('assunzioni');renderList('dipendenze');
+renderMatrixPreview();
+renderQuiz();
+renderAssets();renderZone();renderConduits();renderScenari();renderSL();renderSummary();
+renderChecks();
+document.getElementById('saveStatus').textContent=state.meta.updated?'✓ ultimo salvataggio '+new Date(state.meta.updated).toLocaleString('it-IT'):'nuovo progetto';
+</script>
+</body>
+</html>

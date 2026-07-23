@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="favicon.png">
+<title>MACHINA — Informativa Privacy · Documentor</title>
+<meta name="description" content="Informativa privacy della piattaforma MACHINA (app.documentor.it).">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://documentor.it/machina-privacy.html">
+<style>
+  :root{--paper:#FAFAF8;--ink:#14181F;--slate:#1E2630;--line:#DADDE2;--muted:#6A7280;--accent:#2D54D4;--accent-2:#3F66E6;--yellow:#F4C20D;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--mono:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px}
+  nav{position:sticky;top:0;z-index:50;background:rgba(30,38,48,.93);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.07)}
+  nav .row{display:flex;align-items:center;justify-content:space-between;height:60px;color:#EDEFF2;max-width:1120px;margin:0 auto;padding:0 22px}
+  .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:18px;text-decoration:none;color:#fff}
+  .logo b{color:var(--accent-2)}
+  .navlinks a{font-size:14px;color:#B8BFC8;text-decoration:none;margin-left:22px}
+  .navlinks a:hover{color:#fff}
+  header.doc{padding:44px 0 8px;border-bottom:1px solid var(--line);margin-bottom:8px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+  h1{font-size:clamp(24px,3.4vw,32px);letter-spacing:-.02em;margin:10px 0 6px;font-weight:800}
+  .meta{font-family:var(--mono);font-size:12px;color:var(--muted);margin-bottom:22px}
+  h2{font-size:19px;margin:34px 0 10px;letter-spacing:-.01em}
+  p,li{color:#333A44}
+  ul{padding-left:22px}
+  li{margin-bottom:7px}
+  .warn{background:#FDF8EE;border:1px solid #E9D28F;border-radius:10px;padding:13px 16px;font-size:13.5px;color:#6B5312;margin:16px 0}
+  .todo{background:#EDF2FE;border:1px solid #C2D1F5;border-radius:10px;padding:13px 16px;font-size:13.5px;color:#2A3F7A;margin:16px 0}
+  .todo b{font-family:var(--mono);font-size:11px;letter-spacing:.08em}
+  footer{padding:36px 0 44px;border-top:1px solid var(--line);margin-top:56px;font-size:13px;color:var(--muted)}
+  footer a{color:inherit}
+  main{padding-bottom:10px}
+</style>
+</head>
+<body>
+<nav><div class="row">
+  <a class="logo" href="index.html"><img src="logo.png" alt="Documentor" style="height:32px;filter:brightness(0) invert(1)"><span>Docu<b>mentor</b></span></a>
+  <div class="navlinks"><a href="index.html">Home</a><a href="index.html#strumenti">Strumenti</a><a href="machina.html">MACHINA</a><a href="index.html#contatti">Contatti</a></div>
+</div></nav>
+<div class="wrap">
+
+<header class="doc">
+  <span class="eyebrow">Documento legale · app.documentor.it</span>
+  <h1>MACHINA — Informativa Privacy</h1>
+  <div class="meta">app.documentor.it · bozza v0.1 · luglio 2026</div>
+</header>
+<main>
+<div class="warn">⚠ BOZZA redatta sulla base dell’architettura tecnica reale della piattaforma. Da far rivedere a un professionista legale/privacy prima della pubblicazione. I riquadri azzurri indicano dati da completare.</div>
+<div class="todo"><b>[DA COMPLETARE]</b> Titolare del trattamento: denominazione, forma giuridica (ditta individuale/S.r.l.?), P.IVA, sede, email di contatto (es. privacy@documentor.it). Valutare se serve la nomina di un DPO (per questo tipo di trattamento tipicamente NO, ma va confermato).</div>
+
+<h2>1. Premessa e ambito</h2>
+<p>La presente informativa descrive il trattamento dei dati personali effettuato nell'ambito della piattaforma <b>MACHINA</b> (app.documentor.it), servizio SaaS per la gestione del ciclo di vita documentale e manutentivo di macchine industriali, ai sensi del Regolamento (UE) 2016/679 ("GDPR").</p>
+<p>MACHINA è un servizio <b>B2B</b> rivolto a organizzazioni (costruttori di macchine e loro clienti). Non è destinato a consumatori né a minori.</p>
+
+<h2>2. Ruoli: Titolare e Responsabile del trattamento</h2>
+<p>Il fornitore della piattaforma opera con un duplice ruolo:</p>
+<ul>
+<li><b>Titolare del trattamento</b> per i dati necessari a fornire il servizio: dati di registrazione e account (nome, email, password cifrata), dati di fatturazione e abbonamento, log tecnici e di sicurezza, comunicazioni di assistenza.</li>
+<li><b>Responsabile del trattamento</b> (art. 28 GDPR) per i dati che le organizzazioni clienti caricano nella piattaforma nell'ambito della propria attività: anagrafiche macchine, documenti tecnici, verbali, ordini di lavoro, esecuzioni checklist, foto, nominativi di dipendenti/tecnici inseriti dai clienti (es. assegnatari di ordini di lavoro, esecutori di checklist, firmatari di verbali). Di tali dati sono Titolari le rispettive organizzazioni clienti.</li>
+</ul>
+<div class="todo"><b>[DA COMPLETARE]</b> Predisporre un DPA (Data Processing Agreement / Accordo sul trattamento dei dati ex art. 28) come allegato ai Termini di Servizio: è richiesto dai clienti B2B strutturati ed è un obbligo quando si agisce da Responsabile.</div>
+
+<h2>3. Dati trattati, finalità e basi giuridiche</h2>
+<ul>
+<li><b>Dati di account</b> (nome, email, password cifrata, ruolo, organizzazione, preferenze lingua/tema) — finalità: erogazione del servizio, autenticazione (incl. autenticazione a due fattori facoltativa). Base giuridica: esecuzione del contratto (art. 6.1.b).</li>
+<li><b>Dati di fatturazione e pagamento</b> (ragione sociale, P.IVA, indirizzo, esiti di pagamento) — gestiti tramite Stripe; il fornitore non conserva i numeri di carta. Base giuridica: contratto e obblighi di legge (art. 6.1.b e 6.1.c).</li>
+<li><b>Contenuti caricati dalle organizzazioni</b> (macchine, documenti, foto, checklist, ordini di lavoro, verifiche) — trattati per conto dei clienti in qualità di Responsabile.</li>
+<li><b>Log tecnici e di audit</b> (accessi, azioni rilevanti su documenti e macchine, eventi di sicurezza) — finalità: sicurezza, tracciabilità, prevenzione abusi. Base giuridica: legittimo interesse (art. 6.1.f).</li>
+<li><b>Notifiche email</b> (digest scadenze manutenzioni/verifiche, comunicazioni di servizio) inviate tramite Resend — base giuridica: esecuzione del contratto. Non viene svolta attività di marketing verso gli utenti della piattaforma senza consenso.</li>
+</ul>
+
+<h2>4. Fornitori e sub-responsabili</h2>
+<p>La piattaforma si avvale dei seguenti fornitori (sub-responsabili ove trattino dati per conto dei clienti):</p>
+<ul>
+<li><b>Supabase</b> — database e storage dei dati e dei documenti. Regione di hosting: <b>eu-central-1 (Francoforte, UE)</b>.</li>
+<li><b>Vercel</b> — hosting dell'applicazione web e funzioni serverless.</li>
+<li><b>Stripe</b> — gestione pagamenti e abbonamenti.</li>
+<li><b>Resend</b> — invio email transazionali e digest.</li>
+</ul>
+<div class="todo"><b>[DA COMPLETARE]</b> Verificare per Vercel, Stripe e Resend il meccanismo di trasferimento extra-UE applicabile (adesione al EU-US Data Privacy Framework e/o Clausole Contrattuali Standard) e citarlo esplicitamente. Mantenere aggiornato l’elenco dei sub-responsabili e prevedere nel DPA l’obbligo di comunicarne le variazioni.</div>
+
+<h2>5. Conservazione</h2>
+<ul>
+<li>Dati di account: per la durata del rapporto contrattuale e fino a [90] giorni dalla chiusura dell'account, salvo obblighi di legge.</li>
+<li>Dati di fatturazione: 10 anni (obblighi civilistici e fiscali).</li>
+<li>Contenuti dei clienti: per la durata del contratto; alla cessazione, il cliente può esportare i propri dati (incluso l'export ZIP della documentazione macchina); decorso il periodo di grazia di [30/60] giorni i dati vengono cancellati, salvo diverso accordo.</li>
+</ul>
+<div class="todo"><b>[DA COMPLETARE]</b> Confermare i periodi tra parentesi quadre e allinearli ai ToS (art. Cessazione).</div>
+
+<h2>6. Misure di sicurezza</h2>
+<p>Tra le misure adottate: isolamento dei dati per organizzazione applicato a livello di database (Row Level Security), cifratura in transito (TLS) e a riposo presso i fornitori, autenticazione a due fattori disponibile, controllo degli accessi basato su ruoli, log di audit delle operazioni rilevanti, registro eventi macchina con catena di integrità, backup gestiti dal fornitore di database.</p>
+
+<h2>7. Diritti degli interessati</h2>
+<p>Gli interessati possono esercitare i diritti di cui agli artt. 15-22 GDPR (accesso, rettifica, cancellazione, limitazione, portabilità, opposizione) scrivendo a [email privacy]. È fatto salvo il diritto di reclamo al Garante per la protezione dei dati personali. Per i dati trattati in qualità di Responsabile, le richieste degli interessati verranno inoltrate all'organizzazione cliente Titolare.</p>
+
+<h2>8. Cookie</h2>
+<p>L'applicazione utilizza esclusivamente <b>cookie tecnici</b> necessari all'autenticazione e al funzionamento della sessione. Non sono utilizzati cookie di profilazione o di terze parti a fini pubblicitari.</p>
+<div class="todo"><b>[DA COMPLETARE]</b> Se in futuro si aggiungono strumenti di analytics (es. Vercel Analytics, Plausible, GA4), aggiornare questa sezione e valutare il banner di consenso.</div>
+
+<h2>9. Modifiche</h2>
+<p>La presente informativa può essere aggiornata; le modifiche sostanziali saranno comunicate agli utenti registrati. Ultima revisione: [data].</p>
+</main>
+<footer>© Documentor · <a href="privacy-cookie.html">Privacy &amp; Cookie</a> · <a href="machina-privacy.html">Privacy MACHINA</a> · <a href="machina-termini.html">Termini MACHINA</a></footer>
+</div>
+</body>
+</html>
