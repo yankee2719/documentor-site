@@ -401,6 +401,21 @@ footer{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px sol
     </table>
     <div class="empty" id="scenEmpty" style="margin:14px">Nessuno scenario. Torna al Passo 2 per la generazione automatica o usa la libreria.</div>
   </div>
+  <div class="card">
+    <h3>Vulnerabilità per zona / asset (ZCR 5.2)</h3>
+    <details class="guide"><summary>Cosa registrare qui</summary><div class="gbody">
+      Mentre lo <b>scenario</b> descrive cosa può accadere (minaccia → conseguenza), la <b>vulnerabilità</b> è il punto debole concreto che lo rende possibile: credenziali di default, firmware datato, porte attive, assenza di segmentazione. Registrarle per zona o per singolo asset rende il report difendibile e prepara la gap analysis 62443-3-3. Parti dalla libreria e adatta le voci al caso reale.
+    </div></details>
+    <div class="toolbar">
+      <button class="btn acc" onclick="openVulnModal()">+ Nuova vulnerabilità</button>
+      <button class="btn" onclick="loadVulnLib()">📚 Carica libreria vulnerabilità tipiche</button>
+    </div>
+    <div style="overflow-x:auto"><table id="vulnTable">
+      <thead><tr><th>Riferita a</th><th>Vulnerabilità</th><th>Gravità</th><th></th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+    <div class="empty" id="vulnEmpty">Nessuna vulnerabilità registrata. Usa la libreria per partire velocemente.</div>
+  </div>
   <div class="wiznav"><button class="btn ghost" onclick="goStep(3)">← Indietro</button><span class="msg" id="msg4"></span><button class="btn acc" onclick="goStep(5)">Avanti: Security Level →</button></div>
 </section>
 
@@ -416,6 +431,10 @@ footer{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px sol
   </div></details>
 
   <div id="slZones"></div>
+  <div class="card" id="slTeaser" style="display:none">
+    <h3>Verso la gap analysis IEC 62443-3-3</h3>
+    <div id="slTeaserBody"></div>
+  </div>
   <div class="empty" id="slEmpty" style="display:none">Definisci prima le zone al Passo 4.</div>
   <div class="wiznav"><button class="btn ghost" onclick="goStep(4)">← Indietro</button><span></span><button class="btn acc" onclick="goStep(6)">Avanti: Report →</button></div>
 </section>
@@ -443,7 +462,8 @@ footer{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px sol
     <h3 style="color:var(--amber);border-left-color:var(--amber)">Serve un supporto specialistico?</h3>
     <p style="font-size:13.5px;color:#C9D6DF;margin-bottom:12px">Gap analysis completa sui requisiti IEC 62443-3-3, integrazione della valutazione cyber nel fascicolo tecnico, adeguamento al Regolamento (UE) 2023/1230: affianchiamo i costruttori in tutto il percorso di conformità.</p>
     <!-- TODO: verificare link contatti reale -->
-    <a href="../index.html#contatti" target="_blank" rel="noopener" style="display:inline-block;background:var(--amber);color:var(--ink);padding:9px 18px;border-radius:5px;text-decoration:none;font-weight:700;font-size:13px">Richiedi una consulenza →</a>
+    <a href="mailto:info@documentor.it?subject=Revisione%20CyberRA&body=Buongiorno%2C%0Aallego%20il%20report%20generato%20con%20CyberRA%20per%20la%20revisione%20gratuita%20di%2015%20minuti.%0A%0AMacchina%2Fcommessa%3A%20%0AAzienda%3A%20%0ATelefono%20(opzionale)%3A%20" style="display:inline-block;background:var(--amber);color:var(--ink);padding:9px 18px;border-radius:5px;text-decoration:none;font-weight:700;font-size:13px">✉ Richiedi la revisione gratuita →</a>
+    <p style="font-size:12.5px;color:#9FB3C1;margin:12px 0 0">💡 <b style="color:#fff">Revisione gratuita di 15 minuti:</b> genera il report PDF e invialo a info@documentor.it con oggetto «Revisione CyberRA» — lo commentiamo insieme, senza impegno.</p>
   </div>
   <div class="wiznav"><button class="btn ghost" onclick="goStep(5)">← Indietro</button><span></span><span></span></div>
 </section>
@@ -545,7 +565,7 @@ const LIB=[
 
 /* ================= STATE ================= */
 let state=defaultState();
-let nextId={asset:100, zona:1, conduit:1, scen:1000};
+let nextId={asset:100, zona:1, conduit:1, scen:1000, vuln:1};
 
 function defaultState(){return{
   meta:{tool:'Documentor CyberRA',ver:'2.0',created:new Date().toISOString()},
@@ -555,7 +575,7 @@ function defaultState(){return{
   sogliaRischio:4,
   answers:{},
   generated:false,
-  assets:[],zone:[],conduits:[],scenari:[]
+  assets:[],zone:[],conduits:[],scenari:[],vulns:[]
 };}
 
 /* ================= PERSISTENZA ================= */
@@ -981,6 +1001,95 @@ function loadLibrary(){
   renderScenari();save();renderChecks();
 }
 
+/* ================= VULNERABILITA (ZCR 5.2) ================= */
+const GRAV=['Trascurabile','Bassa','Media','Alta'];
+const GRAVCOL={'Trascurabile':'var(--ok)','Bassa':'var(--low)','Media':'var(--med)','Alta':'var(--crit)'};
+const VULN_LIB=[
+ {t:'Credenziali di default ancora attive su PLC/HMI/router',d:'Password di fabbrica mai sostituite o account condivisi tra piu persone.',g:'Alta'},
+ {t:'Firmware/OS con vulnerabilita note non aggiornato',d:'Versioni datate con CVE pubbliche, assenza di processo di patch.',g:'Alta'},
+ {t:'Accesso remoto sempre attivo senza autenticazione forte',d:'VPN/router di teleassistenza permanente, senza MFA o attivazione su richiesta.',g:'Alta'},
+ {t:'Rete piatta: assenza di segmentazione tra IT e OT',d:'Nessun firewall/VLAN tra rete ufficio e rete di macchina.',g:'Alta'},
+ {t:'PC supervisione privo di antivirus/whitelisting',d:'Endpoint Windows senza protezioni, con accesso a share di rete.',g:'Alta'},
+ {t:'Porte switch inutilizzate attive e fisicamente accessibili',d:'Punti di rete liberi nel quadro o a bordo macchina.',g:'Media'},
+ {t:'Servizi non necessari attivi su HMI/PC',d:'Webserver, FTP, desktop remoto o porte aperte non richieste dal processo.',g:'Media'},
+ {t:'Backup di programmi PLC/HMI assenti o mai testati',d:'Copie non aggiornate o custodite solo sul PC di un tecnico.',g:'Media'},
+ {t:'Rete wireless con cifratura debole o chiave condivisa',d:'Wi-Fi di macchina con protezione obsoleta o password nota a molti.',g:'Media'},
+ {t:'Documentazione di rete assente o non aggiornata',d:'Topologia, indirizzi e flussi non documentati: difficile rilevare anomalie.',g:'Bassa'}
+];
+function vulnRef(v){
+  if(v.assetId){const a=state.assets.find(x=>x.id===v.assetId);return a?('Asset: '+a.nome):'Asset';}
+  if(v.zonaId)return 'Zona: '+zoneName(v.zonaId);
+  return 'SUC (generale)';
+}
+function openVulnModal(id){
+  const v=id?state.vulns.find(x=>x.id===id):{id:'V'+nextId.vuln,zonaId:'',assetId:'',titolo:'',descrizione:'',gravita:'Media'};
+  const assetOpts='<option value="">— nessuno —</option>'+state.assets.map(a=>`<option value="${a.id}" ${a.id===v.assetId?'selected':''}>${esc(a.nome)}</option>`).join('');
+  openModal(`<h3>${id?'Modifica':'Nuova'} vulnerabilita</h3>
+  <div class="fld"><label>Titolo</label><input id="m_vt" value="${esc(v.titolo)}" placeholder="Es. Credenziali di default attive sul router"></div>
+  <div class="fld"><label>Descrizione</label><textarea id="m_vd">${esc(v.descrizione)}</textarea></div>
+  <div class="grid3">
+    <div class="fld"><label>Zona</label><select id="m_vz">${zoneOptions(v.zonaId)}</select></div>
+    <div class="fld"><label>Asset specifico (opz.)</label><select id="m_va">${assetOpts}</select></div>
+    <div class="fld"><label>Gravita</label><select id="m_vg">${GRAV.map(g=>`<option ${g===v.gravita?'selected':''}>${g}</option>`).join('')}</select></div>
+  </div>
+  <div class="actions"><button class="btn ghost" onclick="closeModal()">Annulla</button>
+  <button class="btn acc" onclick="saveVuln('${id||''}')">Salva</button></div>`);
+}
+function saveVuln(id){
+  const obj={titolo:document.getElementById('m_vt').value.trim(),descrizione:document.getElementById('m_vd').value.trim(),
+    zonaId:document.getElementById('m_vz').value,assetId:document.getElementById('m_va').value,
+    gravita:document.getElementById('m_vg').value};
+  if(!obj.titolo){alert('Inserisci il titolo.');return;}
+  if(id){Object.assign(state.vulns.find(x=>x.id===id),obj);}
+  else{obj.id='V'+nextId.vuln;state.vulns.push(obj);nextId.vuln++;}
+  closeModal();renderVulns();save();
+}
+function delVuln(id){if(confirm('Eliminare la vulnerabilita?')){state.vulns=state.vulns.filter(v=>v.id!==id);renderVulns();save();}}
+function renderVulns(){
+  const tb=document.querySelector('#vulnTable tbody');if(!tb)return;tb.innerHTML='';
+  document.getElementById('vulnEmpty').style.display=state.vulns.length?'none':'block';
+  state.vulns.forEach(v=>{
+    tb.insertAdjacentHTML('beforeend',`<tr>
+      <td>${v.zonaId?zoneDot(v.zonaId):''}${esc(vulnRef(v))}</td>
+      <td><strong>${esc(v.titolo)}</strong>${v.descrizione?'<br><span style="color:var(--muted);font-size:12px">'+esc(v.descrizione)+'</span>':''}</td>
+      <td><span class="tag" style="background:${GRAVCOL[v.gravita]};color:${v.gravita==='Media'?'var(--ink)':'#fff'}">${v.gravita}</span></td>
+      <td style="white-space:nowrap"><button class="btn ghost" style="padding:3px 8px" onclick="openVulnModal('${v.id}')">✎</button>
+      <button class="btn danger" style="padding:3px 8px" onclick="delVuln('${v.id}')">✕</button></td></tr>`);
+  });
+}
+function loadVulnLib(){
+  if(!confirm('Caricare '+VULN_LIB.length+' vulnerabilita tipiche OT? Potrai assegnarle a zone/asset, modificarle o eliminarle.'))return;
+  VULN_LIB.forEach(l=>{state.vulns.push({id:'V'+nextId.vuln++,zonaId:'',assetId:'',titolo:l.t,descrizione:l.d,gravita:l.g});});
+  renderVulns();save();
+}
+
+/* ================= TEASER GAP ANALYSIS 62443-3-3 ================= */
+/* Numero di requisiti di sistema (SR base) per Foundational Requirement — IEC 62443-3-3 */
+const SRCOUNT={FR1_IAC:13,FR2_UC:12,FR3_SI:9,FR4_DC:3,FR5_RDF:4,FR6_TRE:2,FR7_RA:8};
+const SR_EXAMPLES=[
+ ['SR 1.1','Identificazione e autenticazione degli utenti: ogni persona che accede al sistema di controllo deve essere identificata e autenticata, su tutte le interfacce.'],
+ ['SR 1.13','Accesso da reti non fidate: le connessioni da reti esterne (es. teleassistenza) devono essere controllate, approvate e monitorate.'],
+ ['SR 2.3','Supporti rimovibili e dispositivi portatili: l\'uso di USB e dispositivi mobili sul sistema deve essere limitato e controllato.'],
+ ['SR 5.1','Segmentazione di rete: la rete del sistema di controllo deve essere separata dalle altre reti tramite zone e conduits protetti.'],
+ ['SR 7.3','Backup del sistema di controllo: devono esistere backup verificati che permettano il ripristino senza compromettere la sicurezza.']
+];
+function applicableSR(z){
+  let n=0;FRS.forEach(fr=>{if((z.slT?.[fr]??0)>=1)n+=SRCOUNT[fr];});return n;
+}
+function renderSLTeaser(){
+  const card=document.getElementById('slTeaser');if(!card)return;
+  if(!state.zone.length){card.style.display='none';return;}
+  card.style.display='block';
+  let rows=state.zone.map(z=>{
+    const n=applicableSR(z);
+    return `<tr><td>${zoneDot(z.id)}${esc(z.nome)}</td><td class="mono" style="font-weight:700">${n} / 51</td></tr>`;
+  }).join('');
+  document.getElementById('slTeaserBody').innerHTML=`
+    <p class="hint" style="margin-bottom:10px">In base agli SL-T assegnati, questa è una <b>stima indicativa</b> dei requisiti di sistema (SR base) della IEC 62443-3-3 applicabili per zona — i requisiti di rafforzamento (RE) crescono ulteriormente da SL 2 in su:</p>
+    <div style="overflow-x:auto"><table><thead><tr><th>Zona</th><th>SR base applicabili</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <p class="hint" style="margin-top:12px">La verifica puntuale di ciascun requisito con evidenze (gap analysis 62443-3-3) è il passo successivo alla presente valutazione: la trovi richiamata nel report.</p>`;
+}
+
 /* ================= SECURITY LEVEL ================= */
 function renderSL(){
   const box=document.getElementById('slZones');box.innerHTML='';
@@ -1001,9 +1110,10 @@ function renderSL(){
   box.querySelectorAll('select').forEach(sel=>{
     sel.addEventListener('change',()=>{
       const z=state.zone.find(x=>x.id===sel.dataset.zone);
-      z.slT[sel.dataset.fr]=parseInt(sel.value);save();
+      z.slT[sel.dataset.fr]=parseInt(sel.value);save();renderSLTeaser();
     });
   });
+  renderSLTeaser();
 }
 
 /* ================= CHECK AVANZAMENTO ================= */
@@ -1096,14 +1206,38 @@ function printReport(){
   state.scenari.forEach(s=>{h+=`<tr><td>${s.id}</td><td>${esc(zoneName(s.zonaId))}</td><td>${esc(s.minaccia)}</td><td>${esc(s.vulnerabilita)}</td><td>${esc(s.conseguenza)}</td><td>${rk(s.imp,s.prob)}</td><td>${esc(s.misure)}</td><td>${rk(s.impRes,s.probRes)}</td><td>${esc(s.stato)}</td></tr>`;});
   h+='</table>';
 
-  h+=`<h2>6. Security Level Target per zona (IEC 62443-3-3)</h2>
+  if(state.vulns.length){
+    h+=`<h2>6. Vulnerabilità identificate (ZCR 5.2)</h2>
+    <table><tr><th>Riferita a</th><th>Vulnerabilità</th><th>Descrizione</th><th>Gravità</th></tr>`;
+    state.vulns.forEach(v=>{h+=`<tr><td>${esc(vulnRef(v))}</td><td>${esc(v.titolo)}</td><td>${esc(v.descrizione)}</td><td>${esc(v.gravita)}</td></tr>`;});
+    h+='</table>';
+  }
+
+  h+=`<h2>${state.vulns.length?7:6}. Security Level Target per zona (IEC 62443-3-3)</h2>
   <table><tr><th>Zona</th>${FRLAB.map(f=>'<th>'+f+'</th>').join('')}</tr>`;
   state.zone.forEach(z=>{h+=`<tr><td>${esc(z.nome)}</td>${FRS.map(fr=>'<td style="text-align:center">SL '+(z.slT?.[fr]??0)+'</td>').join('')}</tr>`;});
   h+='</table>';
 
-  h+=`<h2>7. Conclusioni</h2><p>La valutazione dei rischi cybersecurity è stata condotta secondo la metodologia IEC 62443-3-2 con matrice Impatto × Probabilità 4×5 e soglia di rischio tollerabile pari a ${state.sogliaRischio}. Gli scenari con rischio residuo superiore alla soglia sono soggetti a piano di mitigazione. Il presente documento costituisce evidenza tecnica a supporto della conformità ai requisiti di protezione dalla corruzione (RESS 1.1.9) e di sicurezza e affidabilità dei sistemi di comando (RESS 1.2.1) del Regolamento (UE) 2023/1230.</p>
+  const nGap=(state.vulns.length?8:7);
+  h+=`<h2>${nGap}. Verso la gap analysis IEC 62443-3-3</h2>`;
+  {
+    let rows=state.zone.map(z=>`<tr><td>${esc(z.nome)}</td><td style="text-align:center;font-weight:bold">${applicableSR(z)} / 51</td></tr>`).join('');
+    let exs=SR_EXAMPLES.map(e=>`<tr><td style="white-space:nowrap"><b>${e[0]}</b></td><td>${e[1]}</td></tr>`).join('');
+    h+=`<p>Sulla base dei Security Level Target assegnati, la stima indicativa dei requisiti di sistema (SR base) della IEC 62443-3-3 applicabili è la seguente (i requisiti di rafforzamento — RE — si aggiungono da SL 2 in su):</p>
+    <table><tr><th>Zona</th><th>SR base applicabili</th></tr>${rows}</table>
+    <p>A titolo di esempio, cinque requisiti tipicamente rilevanti per le macchine industriali (descrizione sintetica, non testo normativo):</p>
+    <table><tr><th>Rif.</th><th>Requisito (sintesi)</th></tr>${exs}</table>
+    <p>La <b>verifica puntuale di ciascun requisito applicabile con relative evidenze</b> (gap analysis 62443-3-3), la definizione delle contromisure e l&rsquo;integrazione nel fascicolo tecnico costituiscono il passo successivo alla presente valutazione.</p>`;
+  }
+
+  h+=`<div style="border:1.5pt solid #333;border-radius:6pt;padding:10pt 14pt;margin:14pt 0;page-break-inside:avoid">
+    <p style="margin:0 0 6pt"><b>Revisione gratuita di 15 minuti.</b> Invia questo report a <b>info@documentor.it</b> con oggetto &laquo;Revisione CyberRA&raquo;: lo commentiamo insieme, senza impegno, indicando le priorità di intervento.</p>
+    <p style="margin:0;font-size:9.5pt;color:#333">Documentor affianca i costruttori nella gap analysis IEC 62443-3-3, nell&rsquo;integrazione della valutazione cyber nel fascicolo tecnico e nell&rsquo;adeguamento al Regolamento (UE) 2023/1230 — documentor.it</p>
+  </div>`;
+
+  h+=`<h2>${nGap+1}. Conclusioni</h2><p>La valutazione dei rischi cybersecurity è stata condotta secondo la metodologia IEC 62443-3-2 con matrice Impatto × Probabilità 4×5 e soglia di rischio tollerabile pari a ${state.sogliaRischio}. Gli scenari con rischio residuo superiore alla soglia sono soggetti a piano di mitigazione. Il presente documento costituisce evidenza tecnica a supporto della conformità ai requisiti di protezione dalla corruzione (RESS 1.1.9) e di sicurezza e affidabilità dei sistemi di comando (RESS 1.2.1) del Regolamento (UE) 2023/1230.</p>
   <br><br><table><tr><th style="width:50%">Redatto da</th><th>Approvato da</th></tr><tr><td style="height:50pt">${esc(p.autore)}</td><td></td></tr></table>
-  <p style="font-size:8pt;color:#555;margin-top:8pt">Generato con Documentor CyberRA v2.0 — documentor.it</p>`;
+  <p style="font-size:8pt;color:#555;margin-top:8pt">Generato con Documentor CyberRA v3.0 — documentor.it</p>`;
 
   document.getElementById('report').innerHTML=h;
   window.print();
@@ -1156,7 +1290,7 @@ bindFields();
 renderList('assunzioni');renderList('dipendenze');
 renderMatrixPreview();
 renderQuiz();
-renderAssets();renderZone();renderConduits();renderScenari();renderSL();renderSummary();
+renderAssets();renderZone();renderConduits();renderScenari();renderVulns();renderSL();renderSummary();
 renderChecks();
 document.getElementById('saveStatus').textContent=state.meta.updated?'✓ ultimo salvataggio '+new Date(state.meta.updated).toLocaleString('it-IT'):'nuovo progetto';
 </script>

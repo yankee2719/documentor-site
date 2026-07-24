@@ -18,8 +18,9 @@
   nav .row{display:flex;align-items:center;justify-content:space-between;height:60px;color:#EDEFF2;max-width:1120px;margin:0 auto;padding:0 22px}
   .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:18px;text-decoration:none;color:#fff}
   .logo b{color:var(--accent-2)}
-  .navlinks a{font-size:14px;color:#B8BFC8;text-decoration:none;margin-left:22px}
+  .navlinks a{font-size:14px;color:#B8BFC8;text-decoration:none;margin-left:20px}
   .navlinks a:hover{color:#fff}
+  @media(max-width:720px){.navlinks a{display:none}.navlinks a:last-child{display:inline}}
   header.doc{padding:44px 0 8px;border-bottom:1px solid var(--line);margin-bottom:8px}
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
   h1{font-size:clamp(24px,3.4vw,32px);letter-spacing:-.02em;margin:10px 0 6px;font-weight:800}
@@ -31,9 +32,9 @@
   .warn{background:#FDF8EE;border:1px solid #E9D28F;border-radius:10px;padding:13px 16px;font-size:13.5px;color:#6B5312;margin:16px 0}
   .todo{background:#EDF2FE;border:1px solid #C2D1F5;border-radius:10px;padding:13px 16px;font-size:13.5px;color:#2A3F7A;margin:16px 0}
   .todo b{font-family:var(--mono);font-size:11px;letter-spacing:.08em}
+  .hist{font-size:13px;color:var(--muted)}
   footer{padding:36px 0 44px;border-top:1px solid var(--line);margin-top:56px;font-size:13px;color:var(--muted)}
   footer a{color:inherit}
-  main{padding-bottom:10px}
 </style>
 </head>
 <body>
@@ -46,59 +47,111 @@
 <header class="doc">
   <span class="eyebrow">Documento legale · app.documentor.it</span>
   <h1>MACHINA — Termini di Servizio</h1>
-  <div class="meta">app.documentor.it · bozza v0.1 · luglio 2026</div>
+  <div class="meta">app.documentor.it · bozza v0.2 · luglio 2026</div>
 </header>
 <main>
-<div class="warn">⚠ BOZZA da revisione legale. Le clausole di limitazione di responsabilità e il foro competente in particolare vanno validati da un avvocato. Riquadri azzurri = decisioni/dati da completare.</div>
+<div class="warn">⚠ BOZZA da revisione legale (v0.2, integrata con le clausole richieste dalla revisione). Le clausole di limitazione di responsabilità e il foro competente in particolare vanno validati da un avvocato. Riquadri azzurri = decisioni/dati da completare.</div>
 <div class="todo"><b>[DA COMPLETARE]</b> Fornitore: stessa entità giuridica della privacy policy [denominazione, P.IVA, sede, PEC].</div>
 
 <h2>1. Oggetto</h2>
 <p>I presenti Termini regolano l'uso della piattaforma <b>MACHINA</b> (app.documentor.it), servizio SaaS per la creazione del passaporto digitale delle macchine industriali: gestione documentale, manutenzioni, ordini di lavoro, checklist, verifiche periodiche, ricambi e condivisione tra costruttore e cliente finale. Il servizio è riservato a soggetti che agiscono per scopi professionali (<b>B2B</b>); è esclusa l'applicabilità della disciplina consumeristica.</p>
 
-<h2>2. Account e organizzazioni</h2>
+<h2>2. Licenza d'uso</h2>
+<p>Con la sottoscrizione di un piano il cliente <b>non acquista il software</b>, ma ottiene una licenza d'uso non esclusiva, non trasferibile e non sub-licenziabile della piattaforma in modalità SaaS, limitata alla durata dell'abbonamento e al numero di utenti/macchine/stabilimenti previsti dal piano sottoscritto, per le sole finalità professionali interne del cliente.</p>
+
+<h2>3. Account e organizzazioni</h2>
 <ul>
 <li>La registrazione crea un'organizzazione; chi la crea ne diventa amministratore e garantisce di avere il potere di vincolare l'ente che rappresenta.</li>
-<li>Le credenziali sono personali; il cliente è responsabile della loro custodia e delle attività svolte tramite i propri utenti. È disponibile l'autenticazione a due fattori.</li>
+<li>Le credenziali sono personali; il cliente è responsabile della loro custodia e delle attività svolte tramite i propri utenti. È disponibile l'autenticazione a due fattori. È vietata la condivisione delle credenziali tra più persone.</li>
 <li>Il cliente garantisce che i dati caricati sono leciti e di averne i diritti; è vietato caricare contenuti illeciti o dannosi (malware) e tentare di accedere a dati di altre organizzazioni.</li>
 </ul>
 
-<h2>3. Piani, prezzi e pagamenti</h2>
+<h2>4. Piani, prezzi e pagamenti</h2>
 <ul>
 <li>Piani disponibili: <b>Starter</b> (59 €/mese — 20 macchine, 6 utenti, 2 stabilimenti), <b>Professional</b> (119 €/mese — 100/19/10), <b>Enterprise</b> (249 €/mese — senza limiti). Fatturazione annuale: 10 mensilità. I limiti sono applicati automaticamente dalla piattaforma.</li>
 <li>Pagamenti tramite <b>Stripe</b> (carta); per il piano Enterprise annuale è disponibile il <b>bonifico su fattura</b> con attivazione manuale.</li>
-<li>I prezzi si intendono IVA esclusa e possono essere aggiornati con preavviso di almeno [30] giorni; l'aggiornamento si applica dal rinnovo successivo.</li>
+<li>Tutti i corrispettivi indicati in piattaforma, nelle pagine di prezzo e nel checkout sono esposti <b>al netto di IVA</b> e di ogni altra imposta applicabile; l'IVA è applicata in fattura secondo la normativa vigente in base al Paese e allo status fiscale del cliente (incluso il regime di reverse charge per i soggetti passivi UE, ove applicabile).</li>
+<li>I prezzi possono essere aggiornati con preavviso di almeno [30] giorni; l'aggiornamento si applica dal rinnovo successivo.</li>
 </ul>
+<div class="todo"><b>[DA COMPLETARE]</b> Lato app/Stripe: indicare "+ IVA" accanto a ogni prezzo (pricing e checkout), impostare i Price con tax_behavior "exclusive", attivare Stripe Tax e la raccolta della P.IVA; prevedere l’emissione della fattura elettronica SDI (la ricevuta Stripe non la sostituisce).</div>
 <div class="todo"><b>[DA COMPLETARE]</b> Definire: durata dell’eventuale periodo di prova, politica di rimborso (consiglio: nessun rimborso pro-rata sui periodi già fatturati, disdetta con effetto dal rinnovo), gestione del mancato pagamento (sospensione dopo X giorni).</div>
 
-<h2>4. Proprietà dei dati ed export</h2>
+<h2>5. Proprietà dei dati ed export</h2>
 <ul>
 <li>I dati e i documenti caricati restano di <b>proprietà del cliente</b>. Il fornitore ne fa uso esclusivamente per erogare il servizio, nei limiti dell'informativa privacy e del DPA.</li>
 <li>Il cliente può esportare in autonomia i propri dati in ogni momento (download documenti, export ZIP per macchina, export CSV).</li>
-<li>Alla cessazione del contratto il cliente ha [30/60] giorni per completare l'export; decorso tale termine i dati vengono cancellati.</li>
 </ul>
 
-<h2>5. Livelli di servizio e manutenzione</h2>
-<p>Il fornitore si impegna a mantenere il servizio disponibile con la massima diligenza (best effort), avvalendosi di infrastrutture cloud primarie (Vercel, Supabase — hosting dati in UE). Non è garantito uno SLA formale con penali, salvo diverso accordo scritto per il piano Enterprise. Interventi di manutenzione programmata saranno per quanto possibile comunicati in anticipo.</p>
+<h2>6. Proprietà intellettuale</h2>
+<p>Tutti i diritti relativi alla piattaforma MACHINA — inclusi software, codice sorgente, architettura, grafica, interfaccia, marchi, loghi, database (esclusi i contenuti del cliente) e documentazione — restano di esclusiva proprietà del Fornitore o dei suoi licenzianti. Nessuna disposizione dei presenti Termini trasferisce al cliente diritti di proprietà intellettuale sulla piattaforma.</p>
+
+<h2>7. Uso vietato</h2>
+<p>È in ogni caso vietato:</p>
+<ul>
+<li>effettuare reverse engineering, decompilazione o disassemblaggio della piattaforma, salvo i limiti inderogabili di legge;</li>
+<li>effettuare scraping, estrazione massiva o accesso automatizzato non autorizzato;</li>
+<li>tentare intrusioni, test di vulnerabilità non autorizzati o azioni di hacking;</li>
+<li>caricare o diffondere malware o contenuti dannosi;</li>
+<li>rivendere, noleggiare o mettere a disposizione di terzi il servizio (salvo accordo scritto);</li>
+<li>condividere gli account tra più utenti o cedere le credenziali.</li>
+</ul>
+
+<h2>8. Livelli di servizio e disponibilità</h2>
+<p>Il fornitore si impegna a mantenere il servizio disponibile con la massima diligenza (<b>best effort</b>), avvalendosi di infrastrutture cloud primarie (Vercel, Supabase — hosting dati in UE). Non è garantito un livello minimo di uptime né uno SLA formale con penali, salvo diverso accordo scritto per il piano Enterprise. Il fornitore non risponde di interruzioni o malfunzionamenti imputabili alla connettività internet del cliente, ai fornitori di rete o a cause esterne alla propria infrastruttura. Interventi di manutenzione programmata saranno per quanto possibile comunicati in anticipo.</p>
 <div class="todo"><b>[DA COMPLETARE]</b> Decidere se offrire uno SLA su Enterprise (es. 99,5% mensile con crediti). Consiglio: non prometterlo finché non hai monitoraggio uptime attivo.</div>
 
-<h2>6. Responsabilità — nota specifica sulla conformità normativa</h2>
+<h2>9. Backup</h2>
+<p>I backup della piattaforma sono eseguiti a fini di continuità operativa e disaster recovery dell'infrastruttura nel suo complesso. Essi <b>non costituiscono un servizio di ripristino puntuale</b> di singoli file, record o documenti cancellati dal cliente: la cancellazione di contenuti da parte degli utenti del cliente è da considerarsi definitiva, fatta salva la possibilità per il fornitore di valutare, senza obbligo, richieste straordinarie di ripristino.</p>
+
+<h2>10. Aggiornamenti ed evoluzione del servizio</h2>
+<p>La piattaforma è in continua evoluzione: il fornitore può introdurre, modificare o dismettere funzionalità, anche per esigenze tecniche, di sicurezza o normative, mantenendo nel complesso le caratteristiche essenziali del servizio. Le modifiche rilevanti saranno comunicate con congruo preavviso.</p>
+
+<h2>11. Funzionalità beta</h2>
+<p>Il fornitore può rendere disponibili funzionalità sperimentali o in anteprima ("beta"), incluse eventuali funzionalità basate su intelligenza artificiale, chiaramente identificate come tali. Le funzionalità beta sono fornite "così come sono", senza garanzie di funzionamento, continuità o mantenimento, e possono essere modificate o rimosse in qualsiasi momento.</p>
+
+<h2>12. Feedback</h2>
+<p>Eventuali suggerimenti, segnalazioni e feedback forniti dal cliente o dai suoi utenti potranno essere liberamente utilizzati dal fornitore per migliorare il servizio, senza obblighi di compenso o riconoscimento, e senza che ciò attribuisca al cliente diritti sulle funzionalità sviluppate.</p>
+
+<h2>13. API</h2>
+<p>Eventuali API o interfacce programmatiche che dovessero essere rese disponibili potranno essere soggette a limiti di utilizzo (rate limit), condizioni specifiche e chiavi di accesso personali, e potranno essere modificate o sospese per esigenze tecniche o di sicurezza.</p>
+
+<h2>14. Responsabilità — nota specifica sulla conformità normativa</h2>
 <p>MACHINA è uno <b>strumento di gestione e archiviazione</b>: supporta il cliente negli adempimenti (es. tenuta della documentazione tecnica, registro verifiche periodiche, istruzioni in formato digitale ai sensi del Reg. UE 2023/1230), ma <b>la responsabilità del rispetto degli obblighi normativi resta in capo al cliente</b> (fabbricante o utilizzatore). I contenuti generati dalla piattaforma (PDF, verbali, report) sono redatti sulla base dei dati inseriti dal cliente, che ne verifica correttezza e completezza prima dell'uso.</p>
 <ul>
 <li>Nei limiti di legge, la responsabilità complessiva del fornitore è limitata all'importo pagato dal cliente nei [12] mesi precedenti l'evento; sono esclusi danni indiretti e perdita di profitti. Nulla esclude la responsabilità per dolo o colpa grave.</li>
 </ul>
 
-<h2>7. Sospensione e risoluzione</h2>
+<h2>15. Forza maggiore</h2>
+<p>Nessuna delle parti è responsabile per inadempimenti dovuti a cause di forza maggiore o comunque al di fuori del proprio ragionevole controllo (a titolo esemplificativo: calamità naturali, guerre, atti dell'autorità, scioperi, interruzioni generalizzate di energia o connettività, attacchi informatici su larga scala, indisponibilità prolungata dei fornitori cloud). Gli obblighi restano sospesi per la durata dell'evento.</p>
+
+<h2>16. Sospensione, risoluzione e recesso</h2>
 <ul>
 <li>Il fornitore può sospendere l'account in caso di mancato pagamento, violazione dei presenti Termini o uso abusivo, previa comunicazione ove possibile.</li>
 <li>Il cliente può recedere in ogni momento con effetto dalla scadenza del periodo fatturato.</li>
+<li>Il fornitore può recedere dal contratto con preavviso scritto di almeno [30] giorni; in tal caso il cliente ha diritto al rimborso pro-rata dei periodi pagati e non goduti.</li>
+<li>In caso di violazioni gravi (es. hacking, uso illecito, mancato pagamento reiterato) il fornitore può risolvere il contratto con effetto immediato.</li>
 </ul>
 
-<h2>8. Modifiche, legge applicabile e foro</h2>
+<h2>17. Effetti della cessazione</h2>
+<p>Alla cessazione del contratto, per qualsiasi causa:</p>
+<ul>
+<li>l'accesso alla piattaforma viene disattivato alla data di efficacia della cessazione;</li>
+<li>per un periodo di grazia di [30/60] giorni il cliente può richiedere ed effettuare l'export dei propri dati (download documenti, export ZIP, CSV);</li>
+<li>decorso il periodo di grazia, i dati e i documenti del cliente vengono cancellati in via definitiva dai sistemi di produzione e, nei tempi tecnici dei cicli di backup, dai backup, salvo obblighi di legge o diverso accordo scritto;</li>
+<li>restano in vigore le clausole per natura destinate a sopravvivere (proprietà intellettuale, riservatezza, limitazioni di responsabilità, legge applicabile e foro).</li>
+</ul>
+<div class="todo"><b>[DA COMPLETARE]</b> Allineare il periodo di grazia con la sezione Conservazione della privacy policy.</div>
+
+<h2>18. Modifiche, legge applicabile e foro</h2>
 <ul>
 <li>Il fornitore può modificare i Termini con preavviso di [30] giorni tramite comunicazione in piattaforma o via email; l'uso successivo del servizio vale come accettazione.</li>
 <li>Legge italiana. Foro esclusivo: [Treviso], fatta salva diversa previsione inderogabile.</li>
 </ul>
-<div class="todo"><b>[DA COMPLETARE]</b> Ricordarsi il flusso di accettazione: checkbox esplicita di accettazione ToS+Privacy alla registrazione (con versione e data registrate). Da implementare nell’app se non presente.</div>
+<div class="todo"><b>[DA COMPLETARE]</b> Flusso di accettazione: checkbox esplicita di accettazione ToS+Privacy alla registrazione (con versione e data registrate). Da implementare nell’app se non presente.</div>
+
+<h2>19. Versione e storico</h2>
+<p class="hist"><b>Versione:</b> 1.0 (bozza v0.2) · <b>Data:</b> [data]<br>
+<b>Storico:</b> v0.1 — prima bozza; v0.2 — aggiunte licenza SaaS, proprietà intellettuale, uso vietato, backup, aggiornamenti, beta, feedback, API, forza maggiore, recesso del fornitore, effetti della cessazione.</p>
 </main>
 <footer>© Documentor · <a href="privacy-cookie.html">Privacy &amp; Cookie</a> · <a href="machina-privacy.html">Privacy MACHINA</a> · <a href="machina-termini.html">Termini MACHINA</a></footer>
 </div>

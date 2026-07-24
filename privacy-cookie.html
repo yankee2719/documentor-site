@@ -18,8 +18,9 @@
   nav .row{display:flex;align-items:center;justify-content:space-between;height:60px;color:#EDEFF2;max-width:1120px;margin:0 auto;padding:0 22px}
   .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:18px;text-decoration:none;color:#fff}
   .logo b{color:var(--accent-2)}
-  .navlinks a{font-size:14px;color:#B8BFC8;text-decoration:none;margin-left:22px}
+  .navlinks a{font-size:14px;color:#B8BFC8;text-decoration:none;margin-left:20px}
   .navlinks a:hover{color:#fff}
+  @media(max-width:720px){.navlinks a{display:none}.navlinks a:last-child{display:inline}}
   header.doc{padding:44px 0 8px;border-bottom:1px solid var(--line);margin-bottom:8px}
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
   h1{font-size:clamp(24px,3.4vw,32px);letter-spacing:-.02em;margin:10px 0 6px;font-weight:800}
@@ -31,9 +32,9 @@
   .warn{background:#FDF8EE;border:1px solid #E9D28F;border-radius:10px;padding:13px 16px;font-size:13.5px;color:#6B5312;margin:16px 0}
   .todo{background:#EDF2FE;border:1px solid #C2D1F5;border-radius:10px;padding:13px 16px;font-size:13.5px;color:#2A3F7A;margin:16px 0}
   .todo b{font-family:var(--mono);font-size:11px;letter-spacing:.08em}
+  .hist{font-size:13px;color:var(--muted)}
   footer{padding:36px 0 44px;border-top:1px solid var(--line);margin-top:56px;font-size:13px;color:var(--muted)}
   footer a{color:inherit}
-  main{padding-bottom:10px}
 </style>
 </head>
 <body>
@@ -46,29 +47,35 @@
 <header class="doc">
   <span class="eyebrow">Documento legale · documentor.it</span>
   <h1>Privacy &amp; Cookie Policy</h1>
-  <div class="meta">documentor.it · bozza v0.1 · luglio 2026</div>
+  <div class="meta">documentor.it · bozza v0.2 · luglio 2026</div>
 </header>
 <main>
-<div class="warn">⚠ BOZZA da revisione legale. Vale per il sito vetrina documentor.it (statico).</div>
+<div class="warn">⚠ BOZZA da revisione legale (v0.2). Vale per il sito vetrina documentor.it (statico).</div>
 <div class="todo"><b>[DA COMPLETARE]</b> Titolare: stessa entità di MACHINA [denominazione, P.IVA, contatti].</div>
 
-<h2>1. Ambito</h2>
-<p>La presente informativa riguarda il sito <b>documentor.it</b>, sito informativo/vetrina dei servizi Documentor e della piattaforma MACHINA. Per il trattamento dei dati nella piattaforma applicativa (app.documentor.it) si rinvia alla <a href="machina-privacy.html">relativa informativa</a>.</p>
+<h2>1. Ambito e natura del sito</h2>
+<p>La presente informativa riguarda il sito <b>documentor.it</b>, sito <b>informativo/vetrina</b> dei servizi Documentor e della piattaforma MACHINA. Il sito è statico e non richiede registrazione: <b>non è la piattaforma SaaS</b>. Per il trattamento dei dati nella piattaforma applicativa (app.documentor.it) si rinvia alla <a href="machina-privacy.html">relativa informativa privacy</a>.</p>
 
 <h2>2. Dati trattati</h2>
 <ul>
-<li><b>Dati di navigazione</b>: i sistemi di hosting (Vercel) registrano log tecnici (indirizzi IP, richieste) per finalità di sicurezza e funzionamento. Base giuridica: legittimo interesse.</li>
-<li><b>Contatti volontari</b>: chi scrive all'indirizzo email indicato sul sito fornisce i dati necessari a rispondere. Base giuridica: misure precontrattuali su richiesta dell'interessato. Conservazione: il tempo necessario a gestire la richiesta e i successivi rapporti.</li>
-<li><b>Strumenti gratuiti</b> (Gap Analysis, Risk Assessment IEC 62443, Modifica sostanziale): funzionano interamente nel browser dell'utente; i dati inseriti <b>non vengono trasmessi né conservati</b> dal sito, restano in locale sul dispositivo dell'utente (localStorage) e possono essere cancellati dall'utente in qualsiasi momento.</li>
+<li><b>Dati di navigazione</b>: i sistemi di hosting (Vercel) registrano log tecnici — indirizzo IP, tipo di browser e sistema operativo, data/ora (timestamp), pagina/risorsa richiesta e altri parametri della richiesta HTTP — per finalità di sicurezza e funzionamento. Base giuridica: legittimo interesse. Conservazione: per i tempi tecnici previsti dal provider di hosting.</li>
+<li><b>Contatti volontari</b>: chi scrive all'indirizzo email indicato sul sito fornisce i dati necessari a rispondere. Base giuridica: misure precontrattuali su richiesta dell'interessato. Conservazione: per il tempo necessario a gestire la richiesta e gli eventuali successivi rapporti, e comunque non oltre [24] mesi dall'ultimo contatto, salvo instaurazione di un rapporto contrattuale.</li>
 </ul>
-<div class="todo"><b>[DA COMPLETARE]</b> Se il sito ha o avrà form di contatto, newsletter o analytics, integrare le rispettive sezioni (e per la newsletter serve consenso + double opt-in).</div>
+<div class="todo"><b>[DA COMPLETARE]</b> Se il sito ha o avrà form di contatto, newsletter o analytics, integrare le rispettive sezioni (per la newsletter serve consenso + double opt-in). Confermare il periodo di conservazione delle email.</div>
 
-<h2>3. Cookie</h2>
-<p>Il sito non utilizza cookie di profilazione né strumenti di analytics. Sono presenti al più cookie/strumenti tecnici del provider di hosting necessari all'erogazione delle pagine, e la memorizzazione locale (localStorage) esclusivamente tecnica degli strumenti gratuiti, che risiede sul dispositivo dell'utente. In assenza di cookie non tecnici, <b>non è richiesto banner di consenso</b>.</p>
-<div class="todo"><b>[DA COMPLETARE]</b> Verificare con l'ispezione del browser (DevTools → Application → Cookies) che il sito statico non imposti davvero cookie non tecnici. Se si aggiunge analytics, aggiornare questa sezione e valutare il banner di consenso.</div>
+<h2>3. Collegamenti a servizi di terzi</h2>
+<p>Il sito può contenere collegamenti a servizi di terze parti (es. LinkedIn, GitHub, YouTube, la piattaforma app.documentor.it). Cliccando su tali collegamenti l'utente accede a servizi gestiti da soggetti terzi, che trattano i dati secondo le proprie informative privacy, alle quali si rinvia. Il Titolare non risponde dei trattamenti effettuati da tali terzi.</p>
 
-<h2>4. Diritti</h2>
-<p>Gli interessati possono esercitare i diritti di cui agli artt. 15-22 GDPR scrivendo a [email privacy]; resta fermo il diritto di reclamo al Garante per la protezione dei dati personali. Ultima revisione: [data].</p>
+<h2>4. Cookie, Local Storage e Session Storage</h2>
+<p>Il sito non utilizza cookie di profilazione. Sono presenti al più cookie/strumenti tecnici del provider di hosting necessari all'erogazione delle pagine. Il sito può inoltre utilizzare Local Storage e Session Storage del browser per finalità esclusivamente tecniche (es. preferenze di visualizzazione e dati inseriti negli strumenti gratuiti, che restano sul dispositivo dell'utente), senza tracciamento dell'utente. In assenza di cookie e strumenti non tecnici, non è richiesto un banner di consenso.</p>
+<div class="todo"><b>[DA COMPLETARE]</b> Verificare con l'ispezione del browser (DevTools → Application → Cookies / Local Storage) che il sito statico non imposti davvero cookie o storage non tecnici. Se si aggiunge analytics, aggiornare questa sezione.</div>
+
+<h2>5. Diritti e contatti</h2>
+<p>Gli interessati possono esercitare i diritti di cui agli artt. 15-22 GDPR scrivendo a <b>[privacy@documentor.it oppure info@documentor.it]</b>; resta fermo il diritto di reclamo al Garante per la protezione dei dati personali.</p>
+
+<h2>6. Versione e storico</h2>
+<p class="hist"><b>Versione:</b> 1.0 (bozza v0.2) · <b>Data:</b> [data]<br>
+<b>Storico:</b> v0.1 — prima bozza; v0.2 — aggiunte natura del sito, dettaglio log, conservazione contatti, link a terzi, Local/Session Storage, contatti privacy.</p>
 </main>
 <footer>© Documentor · <a href="privacy-cookie.html">Privacy &amp; Cookie</a> · <a href="machina-privacy.html">Privacy MACHINA</a> · <a href="machina-termini.html">Termini MACHINA</a></footer>
 </div>

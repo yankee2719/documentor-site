@@ -18,8 +18,9 @@
   nav .row{display:flex;align-items:center;justify-content:space-between;height:60px;color:#EDEFF2;max-width:1120px;margin:0 auto;padding:0 22px}
   .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:18px;text-decoration:none;color:#fff}
   .logo b{color:var(--accent-2)}
-  .navlinks a{font-size:14px;color:#B8BFC8;text-decoration:none;margin-left:22px}
+  .navlinks a{font-size:14px;color:#B8BFC8;text-decoration:none;margin-left:20px}
   .navlinks a:hover{color:#fff}
+  @media(max-width:720px){.navlinks a{display:none}.navlinks a:last-child{display:inline}}
   header.doc{padding:44px 0 8px;border-bottom:1px solid var(--line);margin-bottom:8px}
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
   h1{font-size:clamp(24px,3.4vw,32px);letter-spacing:-.02em;margin:10px 0 6px;font-weight:800}
@@ -31,9 +32,9 @@
   .warn{background:#FDF8EE;border:1px solid #E9D28F;border-radius:10px;padding:13px 16px;font-size:13.5px;color:#6B5312;margin:16px 0}
   .todo{background:#EDF2FE;border:1px solid #C2D1F5;border-radius:10px;padding:13px 16px;font-size:13.5px;color:#2A3F7A;margin:16px 0}
   .todo b{font-family:var(--mono);font-size:11px;letter-spacing:.08em}
+  .hist{font-size:13px;color:var(--muted)}
   footer{padding:36px 0 44px;border-top:1px solid var(--line);margin-top:56px;font-size:13px;color:var(--muted)}
   footer a{color:inherit}
-  main{padding-bottom:10px}
 </style>
 </head>
 <body>
@@ -46,10 +47,10 @@
 <header class="doc">
   <span class="eyebrow">Documento legale · app.documentor.it</span>
   <h1>MACHINA — Informativa Privacy</h1>
-  <div class="meta">app.documentor.it · bozza v0.1 · luglio 2026</div>
+  <div class="meta">app.documentor.it · bozza v0.2 · luglio 2026</div>
 </header>
 <main>
-<div class="warn">⚠ BOZZA redatta sulla base dell’architettura tecnica reale della piattaforma. Da far rivedere a un professionista legale/privacy prima della pubblicazione. I riquadri azzurri indicano dati da completare.</div>
+<div class="warn">⚠ BOZZA redatta sulla base dell'architettura tecnica reale della piattaforma, integrata con revisione legale (v0.2). Da far validare a un professionista legale/privacy prima della pubblicazione. I riquadri azzurri indicano dati da completare.</div>
 <div class="todo"><b>[DA COMPLETARE]</b> Titolare del trattamento: denominazione, forma giuridica (ditta individuale/S.r.l.?), P.IVA, sede, email di contatto (es. privacy@documentor.it). Valutare se serve la nomina di un DPO (per questo tipo di trattamento tipicamente NO, ma va confermato).</div>
 
 <h2>1. Premessa e ambito</h2>
@@ -62,7 +63,8 @@
 <li><b>Titolare del trattamento</b> per i dati necessari a fornire il servizio: dati di registrazione e account (nome, email, password cifrata), dati di fatturazione e abbonamento, log tecnici e di sicurezza, comunicazioni di assistenza.</li>
 <li><b>Responsabile del trattamento</b> (art. 28 GDPR) per i dati che le organizzazioni clienti caricano nella piattaforma nell'ambito della propria attività: anagrafiche macchine, documenti tecnici, verbali, ordini di lavoro, esecuzioni checklist, foto, nominativi di dipendenti/tecnici inseriti dai clienti (es. assegnatari di ordini di lavoro, esecutori di checklist, firmatari di verbali). Di tali dati sono Titolari le rispettive organizzazioni clienti.</li>
 </ul>
-<div class="todo"><b>[DA COMPLETARE]</b> Predisporre un DPA (Data Processing Agreement / Accordo sul trattamento dei dati ex art. 28) come allegato ai Termini di Servizio: è richiesto dai clienti B2B strutturati ed è un obbligo quando si agisce da Responsabile.</div>
+<p>Il rapporto è disciplinato dal Data Processing Agreement (DPA) allegato ai Termini di Servizio, che regola istruzioni, sicurezza, sub-responsabili, assistenza nell'esercizio dei diritti e restituzione/cancellazione dei dati.</p>
+<div class="todo"><b>[DA COMPLETARE]</b> Redigere effettivamente il DPA ex art. 28 come allegato ai ToS: è il primo documento che i clienti B2B strutturati richiedono ed è un obbligo quando si agisce da Responsabile.</div>
 
 <h2>3. Dati trattati, finalità e basi giuridiche</h2>
 <ul>
@@ -81,28 +83,66 @@
 <li><b>Stripe</b> — gestione pagamenti e abbonamenti.</li>
 <li><b>Resend</b> — invio email transazionali e digest.</li>
 </ul>
-<div class="todo"><b>[DA COMPLETARE]</b> Verificare per Vercel, Stripe e Resend il meccanismo di trasferimento extra-UE applicabile (adesione al EU-US Data Privacy Framework e/o Clausole Contrattuali Standard) e citarlo esplicitamente. Mantenere aggiornato l’elenco dei sub-responsabili e prevedere nel DPA l’obbligo di comunicarne le variazioni.</div>
+<p>L'elenco aggiornato dei sub-responsabili è mantenuto dal fornitore; il DPA prevede l'obbligo di comunicare ai clienti le variazioni con congruo preavviso.</p>
+<div class="todo"><b>[DA COMPLETARE]</b> Valutare la pubblicazione di una pagina pubblica "Subprocessors" (elenco + data ultima modifica): pratica molto apprezzata dai clienti enterprise.</div>
 
-<h2>5. Conservazione</h2>
+<h2>5. Categorie di destinatari</h2>
+<p>Oltre ai fornitori di cui al punto 4, i dati possono essere comunicati, nei limiti delle rispettive finalità, a:</p>
+<ul>
+<li>professionisti e consulenti del Titolare (commercialista, consulenti legali, consulenti IT e sicurezza), tenuti a riservatezza;</li>
+<li>provider di servizi di comunicazione (email, PEC);</li>
+<li>istituti bancari e di pagamento, per la gestione degli incassi;</li>
+<li>autorità pubbliche, organi di vigilanza e autorità giudiziaria, quando previsto dalla legge.</li>
+</ul>
+<p>I dati non sono diffusi né ceduti a terzi per finalità commerciali.</p>
+
+<h2>6. Trasferimenti extra-UE</h2>
+<p>I dati e i documenti della piattaforma sono ospitati in UE (Supabase, regione Francoforte). Alcuni fornitori (es. Vercel, Stripe, Resend) possono però trattare determinati dati negli Stati Uniti o in altri Paesi terzi. In tali casi il trasferimento avviene esclusivamente mediante uno dei meccanismi previsti dal Capo V del GDPR, quali:</p>
+<ul>
+<li>decisione di adeguatezza della Commissione Europea;</li>
+<li>adesione del fornitore all'EU-US Data Privacy Framework;</li>
+<li>Clausole Contrattuali Standard (SCC), integrate ove necessario da misure supplementari.</li>
+</ul>
+<div class="todo"><b>[DA COMPLETARE]</b> Verificare per Vercel, Stripe e Resend il meccanismo effettivamente applicabile (DPF e/o SCC) e citarlo puntualmente nella versione definitiva.</div>
+
+<h2>7. Conservazione</h2>
 <ul>
 <li>Dati di account: per la durata del rapporto contrattuale e fino a [90] giorni dalla chiusura dell'account, salvo obblighi di legge.</li>
 <li>Dati di fatturazione: 10 anni (obblighi civilistici e fiscali).</li>
 <li>Contenuti dei clienti: per la durata del contratto; alla cessazione, il cliente può esportare i propri dati (incluso l'export ZIP della documentazione macchina); decorso il periodo di grazia di [30/60] giorni i dati vengono cancellati, salvo diverso accordo.</li>
+<li>Log tecnici e di audit: per il tempo necessario alle finalità di sicurezza e comunque non oltre [12] mesi, salvo esigenze di accertamento di illeciti.</li>
 </ul>
-<div class="todo"><b>[DA COMPLETARE]</b> Confermare i periodi tra parentesi quadre e allinearli ai ToS (art. Cessazione).</div>
+<div class="todo"><b>[DA COMPLETARE]</b> Confermare i periodi tra parentesi quadre e allinearli ai ToS (art. Effetti della cessazione).</div>
 
-<h2>6. Misure di sicurezza</h2>
-<p>Tra le misure adottate: isolamento dei dati per organizzazione applicato a livello di database (Row Level Security), cifratura in transito (TLS) e a riposo presso i fornitori, autenticazione a due fattori disponibile, controllo degli accessi basato su ruoli, log di audit delle operazioni rilevanti, registro eventi macchina con catena di integrità, backup gestiti dal fornitore di database.</p>
+<h2>8. Misure di sicurezza</h2>
+<p>Tra le misure tecniche e organizzative adottate:</p>
+<ul>
+<li>isolamento e segregazione dei dati per organizzazione (multi-tenant) applicati a livello di database tramite Row Level Security;</li>
+<li>cifratura in transito (TLS) e a riposo presso i fornitori;</li>
+<li>password conservate esclusivamente in forma di hash (mai in chiaro);</li>
+<li>autenticazione a due fattori disponibile e controllo degli accessi basato su ruoli;</li>
+<li>logging e monitoraggio degli accessi e delle operazioni rilevanti (log di audit);</li>
+<li>registro eventi macchina con catena di integrità;</li>
+<li>backup periodici cifrati gestiti dal fornitore di database.</li>
+</ul>
 
-<h2>7. Diritti degli interessati</h2>
+<h2>9. Violazioni di dati personali (data breach)</h2>
+<p>In caso di violazione dei dati personali il Titolare adotterà le procedure previste dagli artt. 33 e 34 GDPR, incluse — ove ne ricorrano i presupposti — la notifica al Garante entro 72 ore e la comunicazione agli interessati. Per i dati trattati in qualità di Responsabile, il fornitore informerà senza ingiustificato ritardo le organizzazioni clienti Titolari, secondo quanto previsto dal DPA.</p>
+
+<h2>10. Decisioni automatizzate e profilazione</h2>
+<p>Il Titolare non adotta processi decisionali interamente automatizzati né svolge attività di profilazione ai sensi dell'art. 22 GDPR.</p>
+
+<h2>11. Diritti degli interessati</h2>
 <p>Gli interessati possono esercitare i diritti di cui agli artt. 15-22 GDPR (accesso, rettifica, cancellazione, limitazione, portabilità, opposizione) scrivendo a [email privacy]. È fatto salvo il diritto di reclamo al Garante per la protezione dei dati personali. Per i dati trattati in qualità di Responsabile, le richieste degli interessati verranno inoltrate all'organizzazione cliente Titolare.</p>
 
-<h2>8. Cookie</h2>
-<p>L'applicazione utilizza esclusivamente <b>cookie tecnici</b> necessari all'autenticazione e al funzionamento della sessione. Non sono utilizzati cookie di profilazione o di terze parti a fini pubblicitari.</p>
+<h2>12. Cookie</h2>
+<p>L'applicazione utilizza esclusivamente <b>cookie tecnici</b> necessari all'autenticazione e al funzionamento della sessione, oltre a Local Storage/Session Storage del browser per preferenze e stato applicativo. Non sono utilizzati cookie di profilazione o di terze parti a fini pubblicitari.</p>
 <div class="todo"><b>[DA COMPLETARE]</b> Se in futuro si aggiungono strumenti di analytics (es. Vercel Analytics, Plausible, GA4), aggiornare questa sezione e valutare il banner di consenso.</div>
 
-<h2>9. Modifiche</h2>
-<p>La presente informativa può essere aggiornata; le modifiche sostanziali saranno comunicate agli utenti registrati. Ultima revisione: [data].</p>
+<h2>13. Versione, storico e modifiche</h2>
+<p>La presente informativa può essere aggiornata; le modifiche sostanziali saranno comunicate agli utenti registrati.</p>
+<p class="hist"><b>Versione:</b> 1.0 (bozza v0.2) · <b>Data di pubblicazione:</b> [data]<br>
+<b>Storico revisioni:</b> v0.1 — prima bozza (luglio 2026); v0.2 — integrazione revisione legale (destinatari, trasferimenti extra-UE, decisioni automatizzate, data breach, sicurezza, versionamento).</p>
 </main>
 <footer>© Documentor · <a href="privacy-cookie.html">Privacy &amp; Cookie</a> · <a href="machina-privacy.html">Privacy MACHINA</a> · <a href="machina-termini.html">Termini MACHINA</a></footer>
 </div>
