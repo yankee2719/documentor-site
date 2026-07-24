@@ -119,6 +119,14 @@
   .foot .small{font-size:13px;color:var(--muted);max-width:40ch;margin-top:12px}
   .legal{margin-top:30px;font-size:12px;color:#9AA3AF;font-family:var(--mono)}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  .dd{position:relative;display:inline-block}
+  .dd>a{cursor:pointer}
+  .dd .ddm{display:none;position:absolute;top:100%;left:-8px;background:#1E2630;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:6px 0;min-width:250px;box-shadow:0 14px 30px -12px rgba(0,0,0,.5);z-index:60}
+  .dd:hover .ddm,.dd:focus-within .ddm{display:block}
+  .ddm a{display:block;padding:10px 16px;font-size:13.5px;color:#B8BFC8;text-decoration:none;white-space:nowrap}
+  .ddm a:hover{background:rgba(255,255,255,.07);color:#fff}
+  .ddm .ddh{padding:8px 16px 4px;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#7C8794;font-family:ui-monospace,monospace}
 </style>
 </head>
 <body>
@@ -128,13 +136,13 @@
     <a class="logo" href="#top"><img src="logo.png" alt="Documentor" style="height:32px;filter:brightness(0) invert(1)"><span>Docu<b>mentor</b></span></a>
     <div class="navlinks">
       <a href="index.html#servizi">Servizi</a>
-      <a href="index.html#strumenti">Strumenti</a>
+      <div class="dd"><a href="index.html#strumenti" style="font-size:13.5px;color:#B8BFC8;text-decoration:none">Strumenti ▾</a><div class="ddm"><div class="ddh">Tool gratuiti</div><a href="gap-analysis.html" target="_blank" rel="noopener">Gap Analysis 2023/1230 ↗</a><a href="cybersecurity-macchine-iec-62443.html">Risk Assessment Cyber OT</a><a href="modifica-sostanziale-macchine.html">Modifica sostanziale</a></div></div>
       <a href="regolamento-2023-1230.html">Regolamento</a>
       <a href="fascicolo-tecnico-ce.html">Fascicolo tecnico</a>
       <a href="adeguamento-macchine-usate.html">Macchine usate</a>
       <a href="machina.html">MACHINA</a>
       <a href="index.html#contatti">Contatti</a>
-      <a class="cta-sm" href="gap-analysis.html">Prova gratis</a>
+      <a class="cta-sm" href="gap-analysis.html" target="_blank" rel="noopener">Prova gratis</a>
     </div>
   </div>
 </nav>

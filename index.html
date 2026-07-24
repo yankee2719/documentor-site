@@ -37,6 +37,14 @@
     .grid-4{grid-template-columns:1fr}
   }
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  .dd{position:relative;display:inline-block}
+  .dd>a{cursor:pointer}
+  .dd .ddm{display:none;position:absolute;top:100%;left:-8px;background:#1E2630;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:6px 0;min-width:250px;box-shadow:0 14px 30px -12px rgba(0,0,0,.5);z-index:60}
+  .dd:hover .ddm,.dd:focus-within .ddm{display:block}
+  .ddm a{display:block;padding:10px 16px;font-size:13.5px;color:#B8BFC8;text-decoration:none;white-space:nowrap}
+  .ddm a:hover{background:rgba(255,255,255,.07);color:#fff}
+  .ddm .ddh{padding:8px 16px 4px;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#7C8794;font-family:ui-monospace,monospace}
 </style>
 </helmet>
 
@@ -51,14 +59,14 @@
     <div style="display:flex;align-items:center;gap:24px">
       <div class="nav-links" style="display:flex;align-items:center;gap:18px">
         <a href="#servizi" style="font-size:13.5px;color:#B8BFC8;text-decoration:none">Servizi</a>
-        <a href="#strumenti" style="font-size:13.5px;color:#B8BFC8;text-decoration:none">Strumenti</a>
+        <div class="dd"><a href="#strumenti" style="font-size:13.5px;color:#B8BFC8;text-decoration:none">Strumenti ▾</a><div class="ddm"><div class="ddh">Tool gratuiti</div><a href="gap-analysis.html" target="_blank" rel="noopener">Gap Analysis 2023/1230 ↗</a><a href="cybersecurity-macchine-iec-62443.html">Risk Assessment Cyber OT</a><a href="modifica-sostanziale-macchine.html">Modifica sostanziale</a></div></div>
         <a href="regolamento-2023-1230.html" style="font-size:13.5px;color:#B8BFC8;text-decoration:none">Regolamento</a>
         <a href="fascicolo-tecnico-ce.html" style="font-size:13.5px;color:#B8BFC8;text-decoration:none">Fascicolo tecnico</a>
         <a href="adeguamento-macchine-usate.html" style="font-size:13.5px;color:#B8BFC8;text-decoration:none">Macchine usate</a>
         <a href="machina.html" style="font-size:13.5px;color:#B8BFC8;text-decoration:none">MACHINA</a>
         <a href="#contatti" style="font-size:13.5px;color:#B8BFC8;text-decoration:none">Contatti</a>
       </div>
-      <a href="gap-analysis.html" style="background:#2D54D4;color:#fff;padding:9px 16px;border-radius:8px;font-weight:600;font-size:14px;text-decoration:none">Prova gratis</a>
+      <a href="gap-analysis.html" target="_blank" rel="noopener" style="background:#2D54D4;color:#fff;padding:9px 16px;border-radius:8px;font-weight:600;font-size:14px;text-decoration:none">Prova gratis</a>
     </div>
   </div>
 </nav>
